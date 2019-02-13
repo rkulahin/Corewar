@@ -6,11 +6,17 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/12 18:02:50 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/13 12:51:51 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+void			error(char *line)
+{
+	ft_printf("%s\n", line);
+	exit(1);
+}
 
 unsigned int	reverse(unsigned int b)
 {
@@ -19,40 +25,15 @@ unsigned int	reverse(unsigned int b)
 	return (b);
 }
 
-int		main(int argc, char **argv)
+int		main(int ac, char **av)
 {
-	int		fd;
-	// char	*line;
-	unsigned int		i;
-	unsigned int		numb;
 	header_t	*champ;
-	
-	i = 0;
-	champ = (header_t *)malloc(sizeof(header_t));
-	argc = 0;
-	fd = open(argv[1], O_RDONLY);
-	numb = read(fd, champ, 4 + PROG_NAME_LENGTH + 4 + 4 + COMMENT_LENGTH + 4);
-	champ->prog_size = reverse(champ->prog_size);
-	ft_printf("magic = %x\n", champ->magic);
-	ft_printf("magic = %s\n", champ->prog_name);
-	ft_printf("magic = %i\n", champ->prog_size);
-	ft_printf("magic = %s\n", champ->comment);
-	if (numb < (4 + PROG_NAME_LENGTH + 4 + 4 + COMMENT_LENGTH + 4))
-		ft_printf("ERROR\n");
-	ft_printf("%i\n", champ->prog_size);
-	ft_printf("%u\n", (unsigned int)CHAMP_MAX_SIZE);
-	if (champ->prog_size > (unsigned int)CHAMP_MAX_SIZE)
-		ft_printf("ERROR\n");
-	numb = read(fd, champ->prog, CHAMP_MAX_SIZE);
-	ft_printf("%d\n", numb);
-	if (numb != champ->prog_size)
-		ft_printf("ERROR\n");
-	while (i < champ->prog_size / 4)
-	{
-		champ->prog[i] = reverse(champ->prog[i]);
-		ft_printf("magic = %.8x\n", champ->prog[i]);
-		i++;
-	}
+	int			fd;
 
+	fd = ac;
+	champ = (header_t *)malloc(sizeof(header_t));
+	fd = open(av[1], O_RDWR);
+	parce_champ(champ, fd);
+	vm_map(1, champ->prog, champ->prog_size);				
 	return (0);
 }
