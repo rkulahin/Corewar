@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "/Users/rkulahin/Desktop/Corewar/virtual_machine",
-            "args": ["helltrain.cor"],
+            "args": ["-n", "3", "helltrain.cor", "helltrain.cor", "helltrain.cor"],
             "stopAtEntry": false,
             "cwd": "/Users/rkulahin/Desktop/Corewar",
             "environment": [],

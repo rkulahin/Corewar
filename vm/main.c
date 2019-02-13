@@ -6,11 +6,33 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/13 12:51:51 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/13 19:47:54 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+t_players		*init_player(void)
+{
+	t_players	*new;
+
+	new = (t_players *)malloc(sizeof(t_players));
+	new->champ = NULL;
+	new->index = 1;
+	new->next = NULL;
+	return (new);
+}
+
+t_vm			*init_vm(void)
+{
+	t_vm	*new;
+
+	new = (t_vm *)malloc(sizeof(t_vm));
+	new->champs = NULL;
+	ft_bzero(new->index_player, 32);
+	new->nbr_cycles = 0;
+	return (new);
+}
 
 void			error(char *line)
 {
@@ -25,15 +47,11 @@ unsigned int	reverse(unsigned int b)
 	return (b);
 }
 
-int		main(int ac, char **av)
+int				main(int ac, char **av)
 {
-	header_t	*champ;
-	int			fd;
+	t_vm	*all;
 
-	fd = ac;
-	champ = (header_t *)malloc(sizeof(header_t));
-	fd = open(av[1], O_RDWR);
-	parce_champ(champ, fd);
-	vm_map(1, champ->prog, champ->prog_size);				
+	all = parce_argv(ac, av);
+	// vm_map(1, champ->prog, champ->prog_size);
 	return (0);
 }
