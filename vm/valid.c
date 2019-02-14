@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 15:26:56 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/13 19:02:44 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/14 13:23:15 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int		valid_num(t_vm *all, int ac, char **av, int i)
 	int		j;
 	int		k;
 
-	if (i == ac - 1)
+	if (i >= ac - 2)
 		error("BAD_INDEX_OF_PLAYER");
 	index = ft_atoi(av[i + 1]);
 	if (index <= 0 || index > MAX_PLAYERS || !str_of_num(av[i + 1]))
