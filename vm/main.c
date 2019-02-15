@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/14 13:25:49 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/15 18:19:05 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ void			test(t_vm *all)
 {
 	int			i;
 	t_players	*tmp;
+	t_carriage	*tmp2;
 
 	tmp = all->champs;
+	tmp2 = all->carriage;
 	ft_printf("nbr_cycles: %i\n", all->nbr_cycles);
 	ft_printf("nbr_champs: %i\n", all->nbr_plrs);
 	ft_printf("nbr_index[0]: %i\n", all->index_player[0]);
@@ -84,6 +86,12 @@ void			test(t_vm *all)
 			ft_printf("%c", all->map[i]);
 	}
 	ft_printf("\nsize = %d\n", i);
+	while (tmp2)
+	{
+		ft_printf("nbr_plr:%i\n", tmp2->nbr_plr);
+		ft_printf("regist:%x\n", tmp2->regist[0]);
+		tmp2 = tmp2->next;
+	}
 }
 
 int				main(int ac, char **av)
@@ -92,8 +100,7 @@ int				main(int ac, char **av)
 
 	all = parce_argv(ac, av);
 	ft_memset(all->map, '0', MEM_SIZE * 2);
-	vm_map(all, all->champs);
+	vm_map(all, all->champs, 0, 0);
 	test(all);
-	// vm_map(1, champ->prog, champ->prog_size);
 	return (0);
 }

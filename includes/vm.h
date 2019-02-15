@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/14 13:25:19 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/15 17:53:59 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 typedef struct s_vm			t_vm;
 typedef struct s_players	t_players;
 typedef struct s_carriage	t_carriage;
-
 /*
 ** 1
 */
@@ -60,6 +59,7 @@ struct						s_vm
 
 	t_players				*champs;
 	t_carriage				*carriage;
+	t_op					optab[17];
 };
 
 struct						s_carriage
@@ -97,8 +97,13 @@ int							valid_dump(t_vm *all, int ac, char **av, int i);
 int							str_of_num(char *str);
 int							nbr_champ(t_players *tmp);
 
-void						vm_map(t_vm	*vm, t_players *plr);
+void						vm_map(t_vm *vm, t_players *plr, int i, int k);
 int							find_cycle(char c1, char c2);
+void						add_carriage(t_vm *vm, t_carriage *new);
+t_carriage					*init_carriage(t_vm *vm, int index, int position);
+
+int							vm_atoi_16(char *str);
 char						*vm_itoa_16(long long numb);
+int							*check_arg(int nb);
 
 #endif

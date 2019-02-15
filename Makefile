@@ -6,7 +6,7 @@
 #    By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/26 13:22:53 by rkulahin          #+#    #+#              #
-#    Updated: 2019/02/14 13:21:49 by rkulahin         ###   ########.fr        #
+#    Updated: 2019/02/15 16:12:26 by rkulahin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,9 @@ SRC_DIR = ./vm/
 SRC = main.c \
 		parce.c \
 		valid.c \
-		vm_map.c
+		vm_map.c \
+		func.c \
+		op.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 INCL = -I includes/
 FLAGS =	-g -Wall -Wextra -Werror
