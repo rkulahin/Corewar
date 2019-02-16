@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/16 14:42:46 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/16 15:15:01 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int				find_cycle(int nbr)
 {
 	if (nbr > 0 && nbr < 16)
 		return (g_optab[nbr - 1].num_cycle);
-	return (1);
+	return (0);
 
 }
 

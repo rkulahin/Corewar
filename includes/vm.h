@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/16 10:58:32 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/16 18:34:41 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ struct						s_vm
 	int						index_player[MAX_PLAYERS];
 	int						nbr_cycles;
 	int						nbr_plrs;
+	int						cycle;
+	int						live;
+	int						nbr_checks;
 
 	unsigned char			map[MEM_SIZE * 2];
 

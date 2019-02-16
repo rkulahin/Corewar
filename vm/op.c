@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2019/02/15 15:53:18 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/16 16:07:20 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,25 @@ t_op	g_optab[17] =
 	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0},
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
+
+// t_func	g_func[16] = 
+// {
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{*op_live(vm, tmp)},
+// 		{0}
+// }

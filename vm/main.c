@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/16 12:38:29 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/16 18:23:27 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_vm			*init_vm(void)
 	new->carriage = NULL;
 	ft_bzero(new->index_player, sizeof(int) * 4);
 	new->nbr_cycles = 0;
+	new->cycle = 0;
+	new->live_for_cycles = 0;
 	return (new);
 }
 
@@ -99,6 +101,9 @@ void			test(t_vm *all)
 	ft_printf("%i\n", arr[1]);
 	ft_printf("%i\n", arr[2]);
 	ft_printf("%i\n", g_optab[6].args[0]);
+	int f;
+	f = (short)32767;
+	ft_printf("%i", f);
 }
 
 int				main(int ac, char **av)
