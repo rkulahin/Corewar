@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 14:46:32 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/15 17:57:57 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/16 12:28:30 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int			vm_atoi_16(char *str)
 	while ((*str >= '0' && *str <= '9') || (*str >= 'a' && *str <= 'f'))
 	{
 		if (*str >= '0' && *str <= '9')
-			i = i * 10 + *str - '0';
+			i = i * 16 + *str - '0';
 		else
 			i = i * 16 + *str - 'a' + 10;
 		str++;
@@ -61,7 +61,7 @@ int				*check_arg(int nb)
 
 	i = 0;
 	arr = (int *)malloc(sizeof(int) * 3);
-	ft_bzero(arr, 24);
+	ft_bzero(arr, sizeof(int) * 3);
 	while (i < 3)
 	{
 		if ((nb & 192) == 192)

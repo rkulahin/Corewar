@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/15 17:53:59 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/16 10:58:32 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int							str_of_num(char *str);
 int							nbr_champ(t_players *tmp);
 
 void						vm_map(t_vm *vm, t_players *plr, int i, int k);
-int							find_cycle(char c1, char c2);
+int							find_cycle(int nbr);
 void						add_carriage(t_vm *vm, t_carriage *new);
 t_carriage					*init_carriage(t_vm *vm, int index, int position);
 

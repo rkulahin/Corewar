@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/15 18:19:05 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/16 12:38:29 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_vm			*init_vm(void)
 	new = (t_vm *)malloc(sizeof(t_vm));
 	new->champs = NULL;
 	new->carriage = NULL;
-	ft_bzero(new->index_player, 32);
+	ft_bzero(new->index_player, sizeof(int) * 4);
 	new->nbr_cycles = 0;
 	return (new);
 }
@@ -65,7 +65,7 @@ void			test(t_vm *all)
 	while (tmp)
 	{
 		ft_printf("index_champ: %i\n", tmp->index);
-		ft_printf("champ_magic: %.8x\n", tmp->champ->magic);
+		ft_printf("champ_magic: %#x\n", tmp->champ->magic);
 		ft_printf("champ_name: %s\n", tmp->champ->prog_name);
 		ft_printf("champ_comment: %s\n", tmp->champ->comment);
 		tmp = tmp->next;
@@ -90,8 +90,15 @@ void			test(t_vm *all)
 	{
 		ft_printf("nbr_plr:%i\n", tmp2->nbr_plr);
 		ft_printf("regist:%x\n", tmp2->regist[0]);
+		ft_printf("cycle:%i\n", tmp2->cycle);
 		tmp2 = tmp2->next;
 	}
+	int *arr;
+	arr = check_arg(0x90);
+	ft_printf("%i\n", arr[0]);
+	ft_printf("%i\n", arr[1]);
+	ft_printf("%i\n", arr[2]);
+	ft_printf("%i\n", g_optab[6].args[0]);
 }
 
 int				main(int ac, char **av)

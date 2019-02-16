@@ -6,33 +6,18 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/15 18:00:43 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/16 14:42:46 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int				find_cycle(char c1, char c2)
+int				find_cycle(int nbr)
 {
-	if (c1 == '1' && c2 == '0')
-		return (2);
-	else if (c1 == '0' && (c2 == '2' || c2 == '3'))
-		return (5);
-	else if (c1 == '0' && (c2 == '6' || c2 == '7' || c2 == '8'))
-		return (6);
-	else if (c1 == '0' && (c2 == '1' || c2 == '4' || c2 == '5' || c2 == 'd'))
-		return (10);
-	else if (c1 == '0' && c2 == '9')
-		return (20);
-	else if (c1 == '0' && (c2 == 'a' || c2 == 'b'))
-		return (25);
-	else if (c1 == '0' && c2 == 'e')
-		return (50);
-	else if (c1 == '0' && c2 == 'c')
-		return (800);
-	else if (c1 == '0' && c2 == 'f')
-		return (1000);
-	return (0);
+	if (nbr > 0 && nbr < 16)
+		return (g_optab[nbr - 1].num_cycle);
+	return (1);
+
 }
 
 t_carriage		*init_carriage(t_vm *vm, int index, int position)
@@ -47,8 +32,8 @@ t_carriage		*init_carriage(t_vm *vm, int index, int position)
 	new->next = NULL;
 	new->operation[0] = vm->map[position];
 	new->operation[1] = vm->map[position + 1];
-	new->cycle = find_cycle(vm->map[position], vm->map[position + 1]);
-	ft_bzero(new->regist, 128);
+	new->cycle = find_cycle(vm_atoi_16(new->operation)) + vm->nbr_cycles;
+	ft_bzero(new->regist, sizeof(int) * 16);
 	new->regist[0] = 0 - index;
 	return (new);
 }
