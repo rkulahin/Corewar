@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/16 18:23:27 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/17 10:39:27 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ t_vm			*init_vm(void)
 	ft_bzero(new->index_player, sizeof(int) * 4);
 	new->nbr_cycles = 0;
 	new->cycle = 0;
-	new->live_for_cycles = 0;
+	new->live = 0;
+	new->cycle_to_die = CYCLE_TO_DIE;
 	return (new);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/16 15:15:01 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/17 13:41:07 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_carriage		*init_carriage(t_vm *vm, int index, int position)
 	new->next = NULL;
 	new->operation[0] = vm->map[position];
 	new->operation[1] = vm->map[position + 1];
-	new->cycle = find_cycle(vm_atoi_16(new->operation)) + vm->nbr_cycles;
+	new->cycle = find_cycle(vm_atoi_16(new->operation)) + vm->cycle;
 	ft_bzero(new->regist, sizeof(int) * 16);
 	new->regist[0] = 0 - index;
 	return (new);

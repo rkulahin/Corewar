@@ -6,13 +6,13 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 18:21:23 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/16 10:45:39 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/17 12:21:28 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-void		op_live(t_vm *vm)
+void		op_live(t_vm *vm, t_carriage *cr)
 {
-	
+	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/16 18:34:41 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/17 12:21:22 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,31 +51,31 @@ struct						s_players
 
 struct						s_vm
 {
-	int						index_player[MAX_PLAYERS];
-	int						nbr_cycles;
-	int						nbr_plrs;
-	int						cycle;
-	int						live;
-	int						nbr_checks;
+	int						index_player[MAX_PLAYERS];	
+	int						nbr_cycles;  			// -dump
+	int						nbr_plrs;				// кол-во игроков
+	int						cycle;					// циклов прошло
+	int						live;					// live за vm->cycle_to_die
+	int						nbr_checks;				// кол-во проверок, когда vm->cycle_to_die не менялся
+	int						cycle_to_die;			// циклов до проверки
 
 	unsigned char			map[MEM_SIZE * 2];
 
-	t_players				*champs;
-	t_carriage				*carriage;
-	t_op					optab[17];
+	t_players				*champs;				// игроки
+	t_carriage				*carriage;				// каретки
 };
 
 struct						s_carriage
 {
-	int						position;
+	int						position;				// позиция каретки на карте
 	int						carry;
-	int						nbr_plr;
+	int						nbr_plr;				// индекс игрока
 
-	unsigned int			regist[REG_NUMBER];
+	unsigned int			regist[REG_NUMBER];		// регистры
 
-	int						live;
-	char					operation[2];
-	int						cycle;
+	int						live;					// когда последний зал исполняла команду live
+	char					operation[2];			// байт операции
+	int						cycle;					// кол-во циклов до исполнения
 
 	t_carriage				*next;
 };
@@ -108,5 +108,7 @@ t_carriage					*init_carriage(t_vm *vm, int index, int position);
 int							vm_atoi_16(char *str);
 char						*vm_itoa_16(long long numb);
 int							*check_arg(int nb);
+
+void						op_live(t_vm *vm, t_carriage *cr);
 
 #endif

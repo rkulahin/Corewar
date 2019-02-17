@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/02/15 18:18:59 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/17 12:24:00 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,7 @@ typedef struct					s_op
 	int							carry;
 }								t_op;
 
+typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
+
+extern	t_func					g_func[17];
 extern	t_op					g_optab[17];
