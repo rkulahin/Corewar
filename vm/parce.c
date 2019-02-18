@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:32:24 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/14 13:21:08 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/18 15:05:08 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void		parce_champ_index(t_vm *all)
 	int		k;
 	int		l;
 
-	all->nbr_plrs = nbr_champ(all->champs);
+	all->nbr_plrs = nbr_champ(all->players);
 	l = -1;
 	k = 1;
 	while (k <= all->nbr_plrs)
@@ -46,7 +46,7 @@ void		put_champ_index(t_vm *all)
 	int			i;
 
 	i = 0;
-	tmp = all->champs;
+	tmp = all->players;
 	while (tmp)
 	{
 		tmp->index = all->index_player[i];
@@ -61,10 +61,10 @@ void		add_champ(t_vm **all, t_players *new)
 	int			i;
 
 	i = 0;
-	tmp = (*all)->champs;
-	if (!(*all)->champs)
+	tmp = (*all)->players;
+	if (!(*all)->players)
 	{
-		(*all)->champs = new;
+		(*all)->players = new;
 		return ;
 	}
 	while (tmp->next)

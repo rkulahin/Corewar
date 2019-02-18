@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 15:26:56 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/14 13:23:15 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/18 15:05:08 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		valid_num(t_vm *all, int ac, char **av, int i)
 	index = ft_atoi(av[i + 1]);
 	if (index <= 0 || index > MAX_PLAYERS || !str_of_num(av[i + 1]))
 		error("BAD_INDEX_OF_PLAYER");
-	j = nbr_champ(all->champs);
+	j = nbr_champ(all->players);
 	if (all->index_player[j] != 0)
 		error("BAD_INDEX");
 	k = -1;

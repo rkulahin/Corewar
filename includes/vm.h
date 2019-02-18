@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/17 12:21:22 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/18 16:10:06 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_carriage	t_carriage;
 struct						s_players
 {
 	int						index;
+	int						live;
 	header_t				*champ;
 	t_players				*next;
 };
@@ -61,7 +62,7 @@ struct						s_vm
 
 	unsigned char			map[MEM_SIZE * 2];
 
-	t_players				*champs;				// игроки
+	t_players				*players;				// игроки
 	t_carriage				*carriage;				// каретки
 };
 
@@ -105,10 +106,25 @@ int							find_cycle(int nbr);
 void						add_carriage(t_vm *vm, t_carriage *new);
 t_carriage					*init_carriage(t_vm *vm, int index, int position);
 
+void						kill_carriage(t_vm *vm, t_carriage *cr);
+void						main_check(t_vm *vm);
+void						check_player(t_vm *vm);
+void						check_command(t_vm *vm, t_carriage *cr);
+void						main_cycle(t_vm *vm);
+
 int							vm_atoi_16(char *str);
 char						*vm_itoa_16(long long numb);
 int							*check_arg(int nb);
 
+void						run_to_command(t_vm *vm,t_carriage *cr);  	// Написать
+void						print_and_return(void);						// Написать
+void						win_player(t_players *last);				// Написать
+
 void						op_live(t_vm *vm, t_carriage *cr);
+
+
+typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
+
+extern	t_func					g_func[17];
 
 #endif

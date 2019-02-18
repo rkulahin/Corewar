@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/02/17 12:24:00 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/18 15:27:29 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 ** Toutes les tailles sont en octets.
 ** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
 */
+#include "vm.h"
 
 #define IND_SIZE        2
 #define REG_SIZE				4
@@ -88,7 +89,4 @@ typedef struct					s_op
 	int							carry;
 }								t_op;
 
-typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
-
-extern	t_func					g_func[17];
 extern	t_op					g_optab[17];

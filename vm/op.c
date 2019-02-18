@@ -6,11 +6,10 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2019/02/17 12:22:50 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/18 17:59:32 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "op.h"
 #include "vm.h"
 
 t_op	g_optab[17] =
@@ -42,22 +41,8 @@ t_op	g_optab[17] =
 
 t_func	g_func[17] =
 {
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{op_live},
-	{0}
+	op_live, op_live, op_live, op_live, op_live,
+	op_live, op_live, op_live, op_live, op_live,
+	op_live, op_live, op_live, op_live, op_live,
+	op_live, 0
 };

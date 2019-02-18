@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/17 10:39:27 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/18 19:25:12 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_players		*init_player(void)
 	new = (t_players *)malloc(sizeof(t_players));
 	new->champ = NULL;
 	new->index = 1;
+	new->live = -1;
 	new->next = NULL;
 	return (new);
 }
@@ -28,7 +29,7 @@ t_vm			*init_vm(void)
 	t_vm	*new;
 
 	new = (t_vm *)malloc(sizeof(t_vm));
-	new->champs = NULL;
+	new->players = NULL;
 	new->carriage = NULL;
 	ft_bzero(new->index_player, sizeof(int) * 4);
 	new->nbr_cycles = 0;
@@ -57,10 +58,10 @@ void			test(t_vm *all)
 	t_players	*tmp;
 	t_carriage	*tmp2;
 
-	tmp = all->champs;
+	tmp = all->players;
 	tmp2 = all->carriage;
 	ft_printf("nbr_cycles: %i\n", all->nbr_cycles);
-	ft_printf("nbr_champs: %i\n", all->nbr_plrs);
+	ft_printf("nbr_players: %i\n", all->nbr_plrs);
 	ft_printf("nbr_index[0]: %i\n", all->index_player[0]);
 	ft_printf("nbr_index[1]: %i\n", all->index_player[1]);
 	ft_printf("nbr_index[2]: %i\n", all->index_player[2]);
@@ -113,7 +114,8 @@ int				main(int ac, char **av)
 
 	all = parce_argv(ac, av);
 	ft_memset(all->map, '0', MEM_SIZE * 2);
-	vm_map(all, all->champs, 0, 0);
+	vm_map(all, all->players, 0, 0);
+	main_cycle(all);
 	test(all);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/17 13:54:13 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/18 19:31:49 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,34 @@ void	main_check(t_vm *vm)
 		vm->nbr_checks = -1;
 	}
 	vm->live = 0;
-	vm->cycle = 0;
+	vm->cycle_to_die = vm->cycle_to_die + vm->cycle;
 	vm->nbr_checks++;
+}
+
+void	check_player(t_vm *vm)
+{
+	t_players	*tmp;
+	t_players	*last;
+	int			i;
+
+	i = 0;
+	last = vm->players;
+	tmp = vm->players;
+	while (tmp)
+	{
+		if (i == 0 && tmp->live > last->live)
+			last = tmp;
+		if (tmp->live != -1 && tmp->live > vm->cycle - vm->cycle_to_die
+			&& tmp->live < vm->cycle)
+		{
+			last = tmp;
+			i++;
+		}
+		tmp->live = -1;
+		tmp = tmp->next;
+	}
+	if (i <= 1)
+		win_player(last);
 }
 
 void	check_command(t_vm *vm, t_carriage *cr)
@@ -79,23 +105,26 @@ void	check_command(t_vm *vm, t_carriage *cr)
 void	main_cycle(t_vm *vm)
 {
 	int				check;
-	t_carriage		*tmp;
+	t_carriage		*car;
 
 	check = 1;
 	while (check)
 	{
-		tmp = vm->carriage;
-		if (vm->nbr_cycles >= vm->cycle)
+		car = vm->carriage;
+		if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
 			print_and_return();
-		if (vm->cycle >= vm->cycle_to_die || vm->cycle_to_die <= 0)
-			main_check(vm);
-		if (!tmp)
-			print_and_return();
-		while (tmp)
+		if (vm->cycle >= vm->cycle_to_die)
 		{
-			if (tmp->cycle <= vm->cycle)
-				check_command(vm, tmp);
-			tmp = tmp->next;
+			check_player(vm);
+			main_check(vm);
+		}
+		if (!car)
+			print_and_return();
+		while (car)
+		{
+			if (car->cycle <= vm->cycle)
+				check_command(vm, car);
+			car = car->next;
 		}
 		vm->cycle++;
 	}
