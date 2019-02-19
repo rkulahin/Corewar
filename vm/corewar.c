@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/18 19:31:49 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/19 08:21:28 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ void	check_command(t_vm *vm, t_carriage *cr)
 	int		i;
 
 	i = vm_atoi_16(cr->operation);
-	if (i > 0 && i <= 16)
+	if (i > 0 && i <= 17)
 	{
-		g_func[i](vm, cr);
+		g_func[i - 1](vm, cr);
 	}
 	run_to_command(vm, cr);
 }
