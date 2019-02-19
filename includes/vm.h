@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/19 08:52:54 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/19 19:20:02 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,11 +135,22 @@ void						win_player(t_players *last);				// Написать
 ** op_live.c
 */
 void						op_live(t_vm *vm, t_carriage *cr);
-char						*valid_str(t_vm *vm, t_carriage *carriage, int	nb);
-
+char						*valid_str(t_vm *vm, int position, int	nb);
+/*
+** op_fork.c
+*/
+void						copy_regist(t_carriage *new, t_carriage *cr);
+t_carriage					*copy_carriage(t_carriage *cr);
+void						op_fork(t_vm *vm, t_carriage *cr);
+void						op_lfork(t_vm *vm, t_carriage *cr);
+/*
+** op_st.c
+*/
+void						replace_map(t_vm *vm, int positon, char *ptr, int nb);
+void						op_st(t_vm *vm, t_carriage *cr);
 
 typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
-
+//T_IND сколько пропускать
 extern	t_func					g_func[17];
 
 #endif
