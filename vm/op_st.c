@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 14:36:08 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/19 19:27:36 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/20 12:34:39 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void		op_st(t_vm *vm, t_carriage *cr)
 		second = valid_str(vm, cr->position + 4, 2);
 		if (args[1] == T_IND)
 		{
-			t_ind = valid_str(vm, cr->position + (short)vm_atoi_16(second), 8);
+			t_ind = valid_str(vm, cr->position - 2 +
+			(short)vm_atoi_16(second), 8);
 			replace_map(vm, cr->position + (vm_atoi_16(t_ind) %
 			IDX_MOD) * 2, first, 2);
 			cr->regist[(unsigned char)vm_atoi_16(second)] =
