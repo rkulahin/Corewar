@@ -6,13 +6,13 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 12:28:39 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/20 14:33:01 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/21 10:22:59 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int			find_ind(t_vm *vm, int pc, char *str)
+static int			find_ind(t_vm *vm, int pc, char *str)
 {
 	int		t_ind;
 	int		nb;

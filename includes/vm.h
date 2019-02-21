@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/20 14:24:30 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/21 10:26:09 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,10 +148,10 @@ void						op_lfork(t_vm *vm, t_carriage *cr);
 */
 void						replace_map(t_vm *vm, int positon, char *ptr, int nb);
 void						op_st(t_vm *vm, t_carriage *cr);
+void						op_sti(t_vm *vm, t_carriage *cr);
 /*
 ** op_and.c
 */
-int							find_ind(t_vm *vm, int pc, char *str);
 void						op_and(t_vm *vm, t_carriage *cr);
 void						op_or(t_vm *vm, t_carriage *cr);
 void						op_xor(t_vm *vm, t_carriage *cr);
