@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/21 10:26:09 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/22 11:19:27 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ struct						s_vm
 	int						live;					// live за vm->cycle_to_die
 	int						nbr_checks;				// кол-во проверок, когда vm->cycle_to_die не менялся
 	int						cycle_to_die;			// циклов до проверки
-
+	int						nbr_log;				// бонус вывод
 	unsigned char			map[MEM_SIZE * 2];
 
 	t_players				*players;				// игроки
@@ -115,7 +115,7 @@ t_carriage					*init_carriage(t_vm *vm, int index, int position);
 ** corewar.c
 */
 void						kill_carriage(t_vm *vm, t_carriage *cr);
-void						main_check(t_vm *vm);
+void						main_check(t_vm *vm, t_carriage *tmp);
 void						check_player(t_vm *vm);
 void						check_command(t_vm *vm, t_carriage *cr);
 void						main_cycle(t_vm *vm);
@@ -160,5 +160,4 @@ void						op_xor(t_vm *vm, t_carriage *cr);
 typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
 //T_IND сколько пропускать
 extern	t_func					g_func[17];
-
 #endif

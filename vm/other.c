@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/21 15:18:59 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/22 11:32:44 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void		win_player(t_players *last)
 	t_players *tmp;
 
 	tmp = last;
-	ft_printf("\nPEREMOGA\n");
+	ft_printf("Contestant %i, \"%s\", has won !", last->index,
+	last->champ->prog_name);
 	exit(1);
 }
 

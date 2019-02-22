@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/19 08:21:28 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/22 11:19:35 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void	kill_carriage(t_vm *vm, t_carriage *cr)
 	}
 }
 
-void	main_check(t_vm *vm)
+void	main_check(t_vm *vm, t_carriage *tmp)
 {
-	t_carriage		*tmp;
 	t_carriage		*tmp2;
 
+	check_player(vm);
 	tmp = vm->carriage;
 	while (tmp)
 	{
@@ -114,10 +114,7 @@ void	main_cycle(t_vm *vm)
 		if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
 			print_and_return();
 		if (vm->cycle >= vm->cycle_to_die)
-		{
-			check_player(vm);
-			main_check(vm);
-		}
+			main_check(vm, NULL);
 		if (!car)
 			print_and_return();
 		while (car)
@@ -126,6 +123,8 @@ void	main_cycle(t_vm *vm)
 				check_command(vm, car);
 			car = car->next;
 		}
+		if ((vm->nbr_log & 2) == 2)
+			ft_printf("It is now cycle %i\n", vm->cycle + 1);
 		vm->cycle++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 12:28:39 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/21 10:22:59 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/22 12:19:21 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ static int			find_ind(t_vm *vm, int pc, char *str)
 	return (t_ind);
 }
 
-static int		*save_arg(int *j, t_vm *vm, t_carriage *cr, int *args)
+static int			*save_arg(int *j, t_vm *vm, t_carriage *cr, int *args)
 {
 	int		i;
 	int		*ar;
 
 	i = -1;
-	ar = (int *)malloc(sizeof(int) * 3);
+	ar = (int *)malloc(sizeof(int) * 4);
 	while (++i < 3)
 		if (args[i] == T_REG)
 		{
@@ -47,10 +47,11 @@ static int		*save_arg(int *j, t_vm *vm, t_carriage *cr, int *args)
 			2 + *j, 2)));
 			*j += 4;
 		}
+	ar[4] = 16;
 	return (ar);
 }
 
-void			op_and(t_vm *vm, t_carriage *cr)
+void				op_and(t_vm *vm, t_carriage *cr)
 {
 	char	*str_cotage;
 	int		*args;
@@ -70,7 +71,7 @@ void			op_and(t_vm *vm, t_carriage *cr)
 	}
 }
 
-void			op_or(t_vm *vm, t_carriage *cr)
+void				op_or(t_vm *vm, t_carriage *cr)
 {
 	char	*str_cotage;
 	int		*args;
@@ -90,7 +91,7 @@ void			op_or(t_vm *vm, t_carriage *cr)
 	}
 }
 
-void			op_xor(t_vm *vm, t_carriage *cr)
+void				op_xor(t_vm *vm, t_carriage *cr)
 {
 	char	*str_cotage;
 	int		*args;

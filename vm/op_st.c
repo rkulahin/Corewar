@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 14:36:08 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/21 10:27:10 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/22 12:26:59 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void		op_st(t_vm *vm, t_carriage *cr)
 		}
 	}
 	cr->position = cr->position + 4 + (args[0] + args[1]) * 2;
+	if (args[0] == T_IND || args[1] == T_IND)
+		cr->position -= 4;
 }
 
 static int			find_ind(t_vm *vm, char *str)
