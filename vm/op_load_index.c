@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_load_index.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 16:43:49 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/21 17:53:54 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/02/23 16:46:57 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 static int		*cast_arg_norm(int type[3], char *str)
 {
-	int			arg[3];
+	int			*arg;
 
+	arg = (int *)malloc(sizeof(int) * 3);
 	arg[2] = (unsigned char)vm_atoi_16(str + ((type[0] + type[1]) * 2));
 	str[(type[0] + type[1]) * 2] = '\0';
 	if (type[1] == 1)
@@ -32,8 +33,9 @@ static int		*cast_arg_norm(int type[3], char *str)
 
 static int		*cast_arg_ind(t_vm *vm, int type[3], char *str, int position)
 {
-	int			arg[3];
+	int			*arg;
 
+	arg = (int *)malloc(sizeof(int) * 3);
 	arg[2] = (unsigned char)vm_atoi_16(str + ((2 + type[1]) * 2));
 	str[(2 + type[1]) * 2] = '\0';
 	if (type[1] == 1)
@@ -61,6 +63,17 @@ static void		push_position(int *tp, t_carriage *car)
 	}
 }
 
+static void			print_op(int *arg, t_carriage *cr, t_vm *vm)
+{
+	if ((vm->nbr_log & 4) == 4)
+	{
+		ft_printf("P%5d | ldi %d %d r%d\n", cr->index, arg[0], arg[1], arg[2]);
+		ft_printf("%5 | -> load from %d + %d = %d (with pc and mod %d)",
+					arg[0], arg[1], arg[0] + arg[1],
+					(((arg[0] + arg[1]) % IDX_MOD) * 2 + cr->position) % 8192);
+	}
+}
+
 void			op_load_index(t_vm *vm, t_carriage *cr)
 {
 	int				*tp;
@@ -75,6 +88,7 @@ void			op_load_index(t_vm *vm, t_carriage *cr)
 		arg = cast_arg_norm(tp, str);
 		cr->regist[arg[2]] = (unsigned int)vm_atoi_16(valid_str(vm,
 		(((arg[0] + arg[1]) % IDX_MOD) * 2 + cr->position - 2) % 8192, 8));
+		print_op(arg, cr, vm);
 	}
 	else if (tp[0] == 4 && (tp[1] == 1 || tp[1] == 2) && tp[2] == 1)
 	{
@@ -83,6 +97,7 @@ void			op_load_index(t_vm *vm, t_carriage *cr)
 		arg = cast_arg_ind(vm, tp, str, cr->position);
 		cr->regist[arg[2]] = (unsigned int)vm_atoi_16(valid_str(vm,
 		(((arg[0] + arg[1]) % IDX_MOD) * 2 + cr->position - 2) % 8192, 8));
+		print_op(arg, cr, vm);
 	}
 	push_position(tp, cr);
 }

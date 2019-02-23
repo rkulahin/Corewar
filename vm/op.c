@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2019/02/19 08:43:28 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/23 16:38:49 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ t_op	g_optab[17] =
 
 t_func	g_func[17] =
 {
-	op_live, op_live, op_live, op_live, op_live,
-	op_live, op_live, op_live, op_live, op_live,
-	op_live, op_live, op_live, op_live, op_live,
-	op_live, 0
+	op_live, op_load, op_st, op_add, op_sub,
+	op_and, op_or, op_xor, op_zjmp, op_load_index,
+	op_sti, op_fork, op_long_load, op_long_load_index, op_lfork,
+	op_aff, 0
 };

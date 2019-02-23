@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/18 19:32:35 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/23 11:49:30 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int				find_cycle(int nbr)
 	if (nbr > 0 && nbr < 16)
 		return (g_optab[nbr - 1].num_cycle);
 	return (0);
-
 }
 
 t_carriage		*init_carriage(t_vm *vm, int index, int position)
@@ -27,6 +26,7 @@ t_carriage		*init_carriage(t_vm *vm, int index, int position)
 	new = (t_carriage *)malloc(sizeof(t_carriage));
 	new->carry = 0;
 	new->live = 0;
+	new->index = vm->nbr_car;
 	new->nbr_plr = index;
 	new->position = position;
 	new->next = NULL;
@@ -35,6 +35,7 @@ t_carriage		*init_carriage(t_vm *vm, int index, int position)
 	new->cycle = find_cycle(vm_atoi_16(new->operation)) + vm->cycle;
 	ft_bzero(new->regist, sizeof(int) * 16);
 	new->regist[0] = 0 - index;
+	vm->nbr_car += 1;
 	return (new);
 }
 

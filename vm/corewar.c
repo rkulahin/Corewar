@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/22 11:19:35 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/23 16:45:00 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ void	kill_carriage(t_vm *vm, t_carriage *cr)
 {
 	t_carriage		*tmp;
 
+	if ((vm->nbr_log & 8) == 8)
+		ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n",
+		cr->index, vm->cycle - cr->live, vm->cycle_to_die);
 	tmp = vm->carriage;
 	if (tmp && tmp == cr)
 	{
@@ -93,11 +96,25 @@ void	check_player(t_vm *vm)
 void	check_command(t_vm *vm, t_carriage *cr)
 {
 	int		i;
+	int		old_pos;
 
 	i = vm_atoi_16(cr->operation);
-	if (i > 0 && i <= 17)
+	if (i > 0 && i <= 16)
 	{
+		old_pos = cr->position;
 		g_func[i - 1](vm, cr);
+		if (((vm->nbr_log & 16) == 16 && i != 9) ||
+		((vm->nbr_log & 16) == 16 && cr->carry == 0))
+		{
+			ft_printf("ADV %d (%#.4x -> %#.4x) ",
+			ABS((old_pos - cr->position) / 2), old_pos / 2, cr->position / 2);
+			while (old_pos != cr->position)
+			{
+				ft_printf("%c%c ", vm->map[old_pos], vm->map[old_pos + 1]);
+				old_pos = (old_pos + 2) % 8192;
+			}
+			ft_printf("\n");
+		}
 	}
 	run_to_command(vm, cr);
 }

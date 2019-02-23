@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_long_load.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 17:43:31 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/21 17:53:50 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/02/23 16:36:06 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void			op_long_load(t_vm *vm, t_carriage *car)
 		str[8] = '\0';
 		car->regist[reg] = (unsigned int)vm_atoi_16(str);
 		car->carry = car->regist[reg] == 0 ? 1 : 0;
+		if ((vm->nbr_log & 4) == 4)
+			ft_printf("P%5d | lld %d r%d\n", car->index, car->regist[reg], reg);
 	}
 	else if (arg[0] == T_IND && arg[1] == T_REG)
 	{
@@ -60,6 +62,8 @@ void			op_long_load(t_vm *vm, t_carriage *car)
 		str[4] = '\0';
 		car->regist[reg] = (unsigned int)convert_ind(vm, car, str);
 		car->carry = car->regist[reg] == 0 ? 1 : 0;
+		if ((vm->nbr_log & 4) == 4)
+			ft_printf("P%5d | lld %d r%d\n", car->index, car->regist[reg], reg);
 	}
 	push_position(arg, car);
 }

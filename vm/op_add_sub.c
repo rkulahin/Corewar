@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   op_add.c                                           :+:      :+:    :+:   */
+/*   op_add_sub.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 19:20:29 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/22 13:56:59 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/02/23 12:56:20 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ void			op_add(t_vm *vm, t_carriage *car)
 		str[2] = '\0';
 		car->regist[reg3] = reg2 + (unsigned int)vm_atoi_16(str);
 		car->carry = car->regist[reg3] == 0 ? 1 : 0;
+		if ((vm->nbr_log & 4) == 4)
+			ft_printf("P    %d | add r%d r%d r%d\n", car->index,
+			(unsigned int)vm_atoi_16(str), reg2, reg3);
 	}
 	push_position(arg, car);
 }
@@ -67,6 +70,9 @@ void			op_sub(t_vm *vm, t_carriage *car)
 		str[2] = '\0';
 		car->regist[reg3] = (unsigned int)vm_atoi_16(str) - reg2;
 		car->carry = car->regist[reg3] == 0 ? 1 : 0;
+		if ((vm->nbr_log & 4) == 4)
+			ft_printf("P    %d | sub r%d r%d r%d\n", car->index,
+			(unsigned int)vm_atoi_16(str), reg2, reg3);
 	}
 	push_position(arg, car);
 }

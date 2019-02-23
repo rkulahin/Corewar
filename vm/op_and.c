@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 12:28:39 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/22 12:19:21 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/23 16:26:23 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ void				op_and(t_vm *vm, t_carriage *cr)
 		ar = save_arg(&j, vm, cr, args);
 		cr->regist[ar[2]] = ar[0] & ar[1];
 		cr->carry = (cr->regist[ar[2]] == 0 ? 1 : 0);
+		ft_printf("P%5i | and %i %i r%i\n", cr->index, ar[0], ar[1], ar[2]);
 	}
+	cr->position = cr->position + j + 2;
 }
 
 void				op_or(t_vm *vm, t_carriage *cr)
@@ -88,7 +90,10 @@ void				op_or(t_vm *vm, t_carriage *cr)
 		ar = save_arg(&j, vm, cr, args);
 		cr->regist[ar[2]] = ar[0] | ar[1];
 		cr->carry = (cr->regist[ar[2]] == 0 ? 1 : 0);
+		ft_printf("P%5i | or %i %i r%i\n", cr->index, ar[0], ar[1], ar[2]);
+
 	}
+	cr->position = cr->position + j + 2;
 }
 
 void				op_xor(t_vm *vm, t_carriage *cr)
@@ -108,5 +113,7 @@ void				op_xor(t_vm *vm, t_carriage *cr)
 		ar = save_arg(&j, vm, cr, args);
 		cr->regist[ar[2]] = ar[0] ^ ar[1];
 		cr->carry = (cr->regist[ar[2]] == 0 ? 1 : 0);
+		ft_printf("P%5i | xor %i %i r%i\n", cr->index, ar[0], ar[1], ar[2]);
 	}
+	cr->position = cr->position + j + 2;
 }

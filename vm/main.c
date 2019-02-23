@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/22 09:29:03 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/23 16:49:04 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ t_vm			*init_vm(void)
 	new->nbr_cycles = 0;
 	new->cycle = 0;
 	new->live = 0;
-	new->nbr_log = -1;
+	new->nbr_log = 0;
+	new->nbr_car = 1;
 	new->cycle_to_die = CYCLE_TO_DIE;
 	return (new);
 }
@@ -117,6 +118,6 @@ int				main(int ac, char **av)
 	ft_memset(all->map, '0', MEM_SIZE * 2);
 	vm_map(all, all->players, 0, 0);
 	main_cycle(all);
-	test(all);
+	// test(all);
 	return (0);
 }
