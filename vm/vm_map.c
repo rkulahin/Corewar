@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/23 11:49:30 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/24 14:44:10 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void			add_carriage(t_vm *vm, t_carriage *new)
 		vm->carriage = new;
 		return ;
 	}
-	if (new->regist[0] > tmp->regist[0] && !tmp->next)
+	if (new->regist[0] < tmp->regist[0])
 	{
 		new->next = tmp;
 		vm->carriage = new;
@@ -57,7 +57,7 @@ void			add_carriage(t_vm *vm, t_carriage *new)
 	}
 	while (tmp->next)
 	{
-		if (new->regist[0] > tmp->next->regist[0])
+		if (new->regist[0] < tmp->next->regist[0])
 		{
 			new->next = tmp->next;
 			tmp->next = new;

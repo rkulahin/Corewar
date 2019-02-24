@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 18:21:46 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/23 13:23:01 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/24 14:49:08 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ void		op_fork(t_vm *vm, t_carriage *cr)
 		new->operation[1] = vm->map[0];
 	else
 		new->operation[1] = vm->map[new->position + 1];
-	cr->position = (cr->position + T_DIR * 2) % 8192;
 	ft_printf("P%5i | fork %i (%i)\n", cr->index, dir,
-	((dir % IDX_MOD) + cr->position) % 4096);
+	((dir % IDX_MOD) + cr->position / 2) % 4096);
+	cr->position = (cr->position + 4) % 8192;
 	run_to_command(vm, new);
-	add_carriage(vm, new);
+	new->next = vm->carriage;
+	vm->carriage = new;
 }
 
 void		op_lfork(t_vm *vm, t_carriage *cr)
@@ -77,5 +78,6 @@ void		op_lfork(t_vm *vm, t_carriage *cr)
 	ft_printf("P%5i | fork %i (%i)\n", cr->index, dir,
 	((dir % IDX_MOD) + cr->position) % 4096);
 	run_to_command(vm, new);
-	add_carriage(vm, new);
+	new->next = vm->carriage;
+	vm->carriage = new;
 }

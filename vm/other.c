@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/23 16:37:25 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/24 15:33:27 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		run_to_command(t_vm *vm, t_carriage *cr)
 			break ;
 		cr->position += 2;
 	}
-	cr->cycle = g_optab[i].num_cycle + vm->cycle;
+	cr->cycle = g_optab[i - 1].num_cycle + vm->cycle;
 }
 
 void			replace_map(t_vm *vm, int positon, char *ptr, int nb)

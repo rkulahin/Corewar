@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 09:21:59 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/22 09:42:50 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/24 16:01:49 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		valid_log(t_vm *all, int ac, char **av, int i)
 		error("BAD_LOG_INDEX");
 	if (all->nbr_log != 0)
 		error("SECOND_LOG_INDEX");
+	ft_printf("INDEX = %d\n", index);
 	all->nbr_log = index;
 	return (i + 2);
 }

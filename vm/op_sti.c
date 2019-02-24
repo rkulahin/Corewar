@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 15:53:02 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/23 16:50:29 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/24 14:50:53 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,32 @@ static int		find_ind(t_vm *vm, char *str)
 	return (t_ind);
 }
 
-static int		*save_arg(t_vm *vm, t_carriage *cr, int *args)
+static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int j)
 {
 	int		*t_args;
+	int		i;
 
 	t_args = (int *)malloc(sizeof(int) * 3);
-	t_args[0] = 0;
-	if (args[1] == T_IND)
-		t_args[1] = find_ind(vm, valid_str(vm, cr->position +
-		4, 4));
-	if (args[1] == T_REG)
-		t_args[1] = (unsigned char)vm_atoi_16(valid_str(vm, cr->position +
-	2, 2));
-	if (args[1] == T_DIR)
-		t_args[1] = (short)vm_atoi_16(valid_str(vm, cr->position + 4, 4));
-	if (args[2] == T_REG)
-		t_args[2] = (unsigned char)find_ind(vm,
-		valid_str(vm, cr->position + 6, 2));
-	else
-		t_args[2] = (short)find_ind(vm,
-		valid_str(vm, cr->position + 6, 4));
+	i = -1;
+	while (++i < 3)
+		if (args[i] == T_IND)
+		{
+			t_args[i] = find_ind(vm, valid_str(vm, cr->position +
+			2 + j, 4));
+			j += 4;
+		}
+		else if (args[i] == T_REG)
+		{
+			t_args[i] = (unsigned char)vm_atoi_16(valid_str(vm, cr->position +
+			2 + j, 4));
+			j += 2;
+		}
+		else if (args[i] == T_DIR)
+		{
+			t_args[i] = (short)vm_atoi_16(valid_str(vm, cr->position +
+			2 + j, 4));
+			j += 4;
+		}
 	return (t_args);
 }
 
@@ -57,7 +63,7 @@ static void		print_sti(int *t_args, t_carriage *cr)
 void			op_sti(t_vm *vm, t_carriage *cr)
 {
 	char	*str_cotage;
-	char	*reg;
+	int		reg;
 	int		*args;
 	int		*t_args;
 	int		dist;
@@ -67,10 +73,10 @@ void			op_sti(t_vm *vm, t_carriage *cr)
 	args = check_arg(vm_atoi_16(str_cotage));
 	if (args[0] == T_REG && args[2] != T_IND)
 	{
-		reg = valid_str(vm, cr->position + 2, 2);
-		t_args = save_arg(vm, cr, args);
+		reg = (unsigned char)vm_atoi_16(valid_str(vm, cr->position + 2, 2)) - 1;
+		t_args = save_arg(vm, cr, args, 0);
 		replace_map(vm, cr->position + ((t_args[1] + t_args[2]) % IDX_MOD) * 2,
-		reg, 2);
+		vm_itoa_16(cr->regist[reg]), 8);
 		if ((vm->nbr_log & 4) == 4)
 			print_sti(t_args, cr);
 	}
@@ -81,4 +87,5 @@ void			op_sti(t_vm *vm, t_carriage *cr)
 		if (args[dist] == T_DIR || args[dist] == T_IND)
 			cr->position = cr->position + 4;
 	}
+	cr->position += 4;
 }

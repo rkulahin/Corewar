@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 18:21:23 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/23 16:57:32 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/24 14:52:43 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void			op_live(t_vm *vm, t_carriage *carriage)
 	{
 		if (players->index == (int)(0 - vm_atoi_16(name)))
 		{
-			ft_printf("%i %i\n", (int)(0 - vm_atoi_16(name)), (vm->nbr_log & 1));
 			players->live = vm->cycle;
 			if ((vm->nbr_log & 1) == 1)
 				ft_printf("Player %i (%s) is said to be alive\n",
