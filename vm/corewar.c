@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/24 16:24:52 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/25 14:31:10 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	check_player(t_vm *vm)
 		tmp->live = -1;
 		tmp = tmp->next;
 	}
-	if (i <= 1)
+	if (i <= 0)
 		win_player(last);
 }
 
@@ -123,13 +123,11 @@ void	check_command(t_vm *vm, t_carriage *cr)
 	// 		ft_printf("%c", vm->map[i]);
 	// }
 	// ft_printf("\nsize = %d\n", i);
-		ft_printf("LOOOOOG = %d\n", vm->nbr_log);	
 		if (vm->cycle == 1249)
 			write(0, 0, 0);
 		if (((vm->nbr_log & 16) == 16 && i != 9) ||
 		((vm->nbr_log & 16) == 16 && cr->carry == 0 && i == 9))
 		{
-			ft_printf("LOG = %d\n", vm->nbr_log & 16);
 			ft_printf("ADV %d (%#.4x -> %#.4x) ",
 			ABS((old_pos - cr->position) / 2), old_pos / 2, cr->position / 2);
 			while (old_pos != cr->position)

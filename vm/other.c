@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/24 15:33:27 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/25 14:27:54 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,18 @@ void		run_to_command(t_vm *vm, t_carriage *cr)
 	cr->cycle = g_optab[i - 1].num_cycle + vm->cycle;
 }
 
-void			replace_map(t_vm *vm, int positon, char *ptr, int nb)
+void			replace_map(t_vm *vm, int position, char *ptr, int nb)
 {
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
+	if (position < 0)
+		position = position + 8192;
 	while (i < nb)
 	{
-		vm->map[(positon + j) % 8192] = ptr[j];
+		vm->map[(position + j) % 8192] = ptr[j];
 		i++;
 		j++;
 	}

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/23 16:44:36 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/25 14:28:13 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int							*check_arg(int nb);
 void						run_to_command(t_vm *vm,t_carriage *cr);
 void						print_and_return(void);						// Написать
 void						win_player(t_players *last);
-void						replace_map(t_vm *vm, int positon, char *ptr, int nb);
+void						replace_map(t_vm *vm, int position, char *ptr, int nb);
 /*
 ** op_live.c
 */
