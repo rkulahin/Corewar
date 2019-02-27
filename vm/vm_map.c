@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_map.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/24 14:44:10 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/26 16:36:48 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ t_carriage		*init_carriage(t_vm *vm, int index, int position)
 	ft_bzero(new->regist, sizeof(int) * 16);
 	new->regist[0] = 0 - index;
 	vm->nbr_car += 1;
+	
+	ft_printf("INDEX = %d\n\n", new->index); // ошибка с индэксом и убийством каретки
+	
 	return (new);
 }
 

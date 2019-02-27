@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/25 14:28:13 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/26 14:42:14 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,19 @@ struct						s_vm
 	int						cycle;					// циклов прошло
 	int						live;					// live за vm->cycle_to_die
 	int						nbr_checks;				// кол-во проверок, когда vm->cycle_to_die не менялся
+	
 	int						cycle_to_die;			// циклов до проверки
+	int						die;					// циклы смерти
+
 	int						nbr_log;				// бонус вывод
 	int						nbr_car;				// кол-во кареток
 	unsigned char			map[MEM_SIZE * 2];
 
 	t_players				*players;				// игроки
+	
+	int						last_index;				// последний игрок который сказал что он жив
+	char					*last_name;				// имя последнего игрока
+
 	t_carriage				*carriage;				// каретки
 };
 

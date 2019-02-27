@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/24 14:50:06 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/25 18:23:04 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_vm			*init_vm(void)
 
 	new = (t_vm *)malloc(sizeof(t_vm));
 	new->players = NULL;
+	new->last_name = NULL;
+	new->last_index = -1;
 	new->carriage = NULL;
 	ft_bzero(new->index_player, sizeof(int) * 4);
 	new->nbr_cycles = 0;
@@ -38,6 +40,7 @@ t_vm			*init_vm(void)
 	new->nbr_log = 0;
 	new->nbr_car = 1;
 	new->cycle_to_die = CYCLE_TO_DIE;
+	new->die = CYCLE_TO_DIE;
 	return (new);
 }
 

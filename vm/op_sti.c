@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_sti.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 15:53:02 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/24 14:50:53 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/26 15:29:59 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int j)
 		else if (args[i] == T_REG)
 		{
 			t_args[i] = (unsigned char)vm_atoi_16(valid_str(vm, cr->position +
-			2 + j, 4));
+			2 + j, 2));
 			j += 2;
 		}
 		else if (args[i] == T_DIR)
@@ -55,7 +55,7 @@ static void		print_sti(int *t_args, t_carriage *cr)
 {
 	ft_printf("P%5i | sti r%i %i %i\n", cr->index,
 	t_args[0], t_args[1], t_args[2]);
-	ft_printf("      | -> store to %i + %i = %i (with pc and mod %i)\n",
+	ft_printf("       | -> store to %i + %i = %i (with pc and mod %i)\n",
 	t_args[1], t_args[2], t_args[1] + t_args[2],
 	(cr->position / 2) + ((t_args[1] + t_args[2]) % IDX_MOD));
 }

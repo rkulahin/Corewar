@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 14:46:32 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/18 16:09:20 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/27 15:10:00 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int			vm_atoi_16(char *str)
 	return (i);
 }
 
-char			*vm_itoa_16(long long numb)
+char		*vm_itoa_16(long long numb)
 {
 	char		*str;
 	int			i;
@@ -54,7 +54,7 @@ char			*vm_itoa_16(long long numb)
 	return (str);
 }
 
-int				*check_arg(int nb)
+int			*check_arg(int nb)
 {
 	int		*arr;
 	int		i;

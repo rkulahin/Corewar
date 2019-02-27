@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/25 14:31:10 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/27 16:28:31 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,20 @@ void	kill_carriage(t_vm *vm, t_carriage *cr)
 
 	if ((vm->nbr_log & 8) == 8)
 		ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n",
-		cr->index, vm->cycle - cr->live, vm->cycle_to_die);
+		cr->index, 42, vm->die);
 	tmp = vm->carriage;
-	if (tmp && tmp == cr)
+	if (!cr->next)
+		cr->next = NULL;
+	if (tmp && tmp->index == cr->index)
 	{
 		vm->carriage = cr->next;
-		free(cr);
 		return ;
 	}
 	while (tmp)
 	{
-		if (tmp->next && tmp->next == cr)
+		if (tmp->next && tmp->next->index == cr->index)
 		{
 			tmp->next = cr->next;
-			free(cr);
 			return ;
 		}
 		tmp = tmp->next;
@@ -46,9 +46,8 @@ void	main_check(t_vm *vm, t_carriage *tmp)
 	tmp = vm->carriage;
 	while (tmp)
 	{
-		tmp2 = tmp;
-		if ((tmp->live == -1) ||
-			(tmp->live != -1 && tmp->live >= vm->cycle_to_die))
+		tmp2 = tmp->next;
+		if (tmp->live < vm->cycle_to_die - vm->die)
 		{
 			kill_carriage(vm, tmp);
 			tmp = tmp2;
@@ -59,11 +58,14 @@ void	main_check(t_vm *vm, t_carriage *tmp)
 	}
 	if (vm->live >= NBR_LIVE || vm->nbr_checks >= MAX_CHECKS)
 	{
-		vm->cycle_to_die -= CYCLE_DELTA;
+		vm->die -= CYCLE_DELTA;
 		vm->nbr_checks = -1;
 	}
 	vm->live = 0;
-	vm->cycle_to_die = vm->cycle_to_die + vm->cycle;
+	if (vm->die <= 0)
+		vm->cycle_to_die += 1;
+	else
+		vm->cycle_to_die = vm->cycle + vm->die;
 	vm->nbr_checks++;
 }
 
@@ -71,25 +73,16 @@ void	check_player(t_vm *vm)
 {
 	t_players	*tmp;
 	t_players	*last;
-	int			i;
 
-	i = 0;
 	last = vm->players;
 	tmp = vm->players;
 	while (tmp)
 	{
-		if (i == 0 && tmp->live > last->live)
+		if (tmp->live > last->live)
 			last = tmp;
-		if (tmp->live != -1 && tmp->live > vm->cycle - vm->cycle_to_die
-			&& tmp->live < vm->cycle)
-		{
-			last = tmp;
-			i++;
-		}
-		tmp->live = -1;
 		tmp = tmp->next;
 	}
-	if (i <= 0)
+	if (last->live < vm->cycle - vm->die)
 		win_player(last);
 }
 
@@ -123,8 +116,6 @@ void	check_command(t_vm *vm, t_carriage *cr)
 	// 		ft_printf("%c", vm->map[i]);
 	// }
 	// ft_printf("\nsize = %d\n", i);
-		if (vm->cycle == 1249)
-			write(0, 0, 0);
 		if (((vm->nbr_log & 16) == 16 && i != 9) ||
 		((vm->nbr_log & 16) == 16 && cr->carry == 0 && i == 9))
 		{
@@ -164,6 +155,8 @@ void	main_cycle(t_vm *vm)
 		}
 		if ((vm->nbr_log & 2) == 2)
 			ft_printf("It is now cycle %i\n", vm->cycle + 1);
+		if (vm->cycle == 6093)
+			write(0, 0, 0);
 		vm->cycle++;
 	}
 }

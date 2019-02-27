@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_st.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 14:36:08 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/24 15:41:39 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/26 16:13:56 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void			op_st(t_vm *vm, t_carriage *cr)
 		s = (unsigned char)vm_atoi_16(valid_str(vm, cr->position + 4, 2));
 		cr->regist[s] = f;
 	}
-	if (args[0] == T_REG && (args[1] == T_REG || args[1] == T_IND))
+	if ((args[0] == T_REG && (args[1] == T_REG || args[1] == T_IND)) && ((vm->nbr_log & 4) == 4))
 		print_st(cr, f, s, args[1]);
 	cr->position = perehod(args, cr);
 }
