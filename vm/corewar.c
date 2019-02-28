@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/27 16:28:31 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/28 15:00:56 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	kill_carriage(t_vm *vm, t_carriage *cr)
 
 	if ((vm->nbr_log & 8) == 8)
 		ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n",
-		cr->index, 42, vm->die);
+		cr->index, vm->cycle_to_die - cr->live, vm->die);
 	tmp = vm->carriage;
 	if (!cr->next)
 		cr->next = NULL;
@@ -42,6 +42,7 @@ void	main_check(t_vm *vm, t_carriage *tmp)
 {
 	t_carriage		*tmp2;
 
+	// ft_printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n DIE %i \n\n\n", vm->die);
 	check_player(vm);
 	tmp = vm->carriage;
 	while (tmp)
@@ -51,10 +52,9 @@ void	main_check(t_vm *vm, t_carriage *tmp)
 		{
 			kill_carriage(vm, tmp);
 			tmp = tmp2;
-			continue ;
 		}
-		tmp->live = -1;
-		tmp = tmp->next;
+		else
+			tmp = tmp->next;
 	}
 	if (vm->live >= NBR_LIVE || vm->nbr_checks >= MAX_CHECKS)
 	{
@@ -91,31 +91,36 @@ void	check_command(t_vm *vm, t_carriage *cr)
 	int		i;
 	int		old_pos;
 
+	if (vm->cycle == 8890 && cr->index == 7)
+			write(0, 0, 0);
 	i = vm_atoi_16(cr->operation);
 	if (i > 0 && i <= 16)
 	{
 		old_pos = cr->position;
 		g_func[i - 1](vm, cr);
-	// 		ft_printf("MAP :\n");
-	// i = -1;
-	// while (++i < MEM_SIZE * 2)
-	// {
-	// 	if ((i % 128) == 0)
-	// 		ft_printf("\n");
-	// 	if (i == 0 || i == 1)
-	// 		ft_printf(RED"%c"EOC, vm->map[i]);
-	// 	else if (i == (MEM_SIZE * 2) / vm->nbr_plrs || i == (MEM_SIZE * 2) / vm->nbr_plrs + 1)
-	// 		ft_printf(YEL"%c"EOC, vm->map[i]);
-	// 	else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 + 1)
-	// 		ft_printf(BLU"%c"EOC, vm->map[i]);
-	// 	else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 + 1)
-	// 		ft_printf(GRE"%c"EOC, vm->map[i]);
-	// 	else if (i <= 1225)
-	// 		ft_printf(RED"%c"EOC, vm->map[i]);
-	// 	else
-	// 		ft_printf("%c", vm->map[i]);
-	// }
-	// ft_printf("\nsize = %d\n", i);
+			ft_printf("%s %i\n", g_optab[i - 1].name, vm->cycle);
+			ft_printf("MAP :\n");
+			i = -1;
+			while (++i < MEM_SIZE * 2)
+			{
+				if ((i % 128) == 0)
+					ft_printf("\n");
+				if (i == 7924)
+					ft_printf(YEL"L"EOC);
+				else if (i == 0 || i == 1)
+					ft_printf(RED"%c"EOC, vm->map[i]);
+				else if (i == (MEM_SIZE * 2) / vm->nbr_plrs || i == (MEM_SIZE * 2) / vm->nbr_plrs + 1)
+					ft_printf(YEL"%c"EOC, vm->map[i]);
+				else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 + 1)
+					ft_printf(BLU"%c"EOC, vm->map[i]);
+				else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 + 1)
+					ft_printf(GRE"%c"EOC, vm->map[i]);
+				else if (i <= 1225)
+					ft_printf(RED"%c"EOC, vm->map[i]);
+				else
+					ft_printf("%c", vm->map[i]);
+			}
+			ft_printf("\nsize = %d\n", i);
 		if (((vm->nbr_log & 16) == 16 && i != 9) ||
 		((vm->nbr_log & 16) == 16 && cr->carry == 0 && i == 9))
 		{
@@ -150,12 +155,14 @@ void	main_cycle(t_vm *vm)
 		while (car)
 		{
 			if (car->cycle <= vm->cycle)
+			{
 				check_command(vm, car);
+			}
 			car = car->next;
 		}
 		if ((vm->nbr_log & 2) == 2)
 			ft_printf("It is now cycle %i\n", vm->cycle + 1);
-		if (vm->cycle == 6093)
+		if (vm->cycle == 8889)
 			write(0, 0, 0);
 		vm->cycle++;
 	}

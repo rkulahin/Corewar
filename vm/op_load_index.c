@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 16:43:49 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/23 16:46:57 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/28 13:47:30 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,12 @@ void			op_load_index(t_vm *vm, t_carriage *cr)
 		str = valid_str(vm, (cr->position + 2) % 8192,
 				(tp[0] + tp[1] + tp[2]) * 2);
 		arg = cast_arg_norm(tp, str);
-		cr->regist[arg[2]] = (unsigned int)vm_atoi_16(valid_str(vm,
+		if (arg[2] <= 0 || arg[2] > 16)
+		{
+			push_position(tp, cr);
+			return ;
+		}
+		cr->regist[arg[2] - 1] = (unsigned int)vm_atoi_16(valid_str(vm,
 		(((arg[0] + arg[1]) % IDX_MOD) * 2 + cr->position - 2) % 8192, 8));
 		print_op(arg, cr, vm);
 	}
@@ -95,7 +100,12 @@ void			op_load_index(t_vm *vm, t_carriage *cr)
 		str = valid_str(vm, (cr->position + 2) % 8192,
 				(2 + tp[1] + tp[2]) * 2);
 		arg = cast_arg_ind(vm, tp, str, cr->position);
-		cr->regist[arg[2]] = (unsigned int)vm_atoi_16(valid_str(vm,
+		if (arg[2] <= 0 || arg[2] > 16)
+		{
+			push_position(tp, cr);
+			return ;
+		}
+		cr->regist[arg[2] - 1] = (unsigned int)vm_atoi_16(valid_str(vm,
 		(((arg[0] + arg[1]) % IDX_MOD) * 2 + cr->position - 2) % 8192, 8));
 		print_op(arg, cr, vm);
 	}

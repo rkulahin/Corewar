@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 17:43:31 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/23 16:36:06 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/28 13:48:45 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,30 @@ void			op_long_load(t_vm *vm, t_carriage *car)
 		str = valid_str(vm, (car->position + 2) % 8192, 10);
 		reg = (unsigned char)vm_atoi_16(str + 8);
 		str[8] = '\0';
-		car->regist[reg] = (unsigned int)vm_atoi_16(str);
-		car->carry = car->regist[reg] == 0 ? 1 : 0;
+		if (reg <= 0 || reg > 16)
+		{
+			push_position(arg, car);
+			return ;
+		}
+		car->regist[reg - 1] = (unsigned int)vm_atoi_16(str);
+		car->carry = car->regist[reg - 1] == 0 ? 1 : 0;
 		if ((vm->nbr_log & 4) == 4)
-			ft_printf("P%5d | lld %d r%d\n", car->index, car->regist[reg], reg);
+			ft_printf("P%5d | lld %d r%d\n", car->index, car->regist[reg - 1], reg);
 	}
 	else if (arg[0] == T_IND && arg[1] == T_REG)
 	{
 		str = valid_str(vm, (car->position + 2) % 8192, 6);
 		reg = (unsigned char)vm_atoi_16(str + 4);
 		str[4] = '\0';
-		car->regist[reg] = (unsigned int)convert_ind(vm, car, str);
-		car->carry = car->regist[reg] == 0 ? 1 : 0;
+		if (reg <= 0 || reg > 16)
+		{
+			push_position(arg, car);
+			return ;
+		}
+		car->regist[reg - 1] = (unsigned int)convert_ind(vm, car, str);
+		car->carry = car->regist[reg - 1] == 0 ? 1 : 0;
 		if ((vm->nbr_log & 4) == 4)
-			ft_printf("P%5d | lld %d r%d\n", car->index, car->regist[reg], reg);
+			ft_printf("P%5d | lld %d r%d\n", car->index, car->regist[reg - 1], reg);
 	}
 	push_position(arg, car);
 }

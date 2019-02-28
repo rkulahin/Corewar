@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/25 18:23:04 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/02/28 10:29:58 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,6 @@ int				main(int ac, char **av)
 	vm_map(all, all->players, 0, 0);
 	main_cycle(all);
 	// test(all);
+	// system("Leaks virtual_machine");
 	return (0);
 }

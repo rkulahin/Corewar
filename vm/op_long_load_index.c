@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 17:49:54 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/23 16:47:23 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/28 13:47:43 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,14 @@ void			op_long_load_index(t_vm *vm, t_carriage *cr)
 		str = valid_str(vm, (cr->position + 2) % 8192,
 				(tp[0] + tp[1] + tp[2]) * 2);
 		arg = cast_arg_norm(tp, str);
-		cr->regist[arg[2]] = (unsigned int)vm_atoi_16(valid_str(vm,
+		if (arg[2] <= 0 || arg[2] > 16)
+		{
+			push_position(tp, cr);
+			return ;
+		}
+		cr->regist[arg[2] - 1] = (unsigned int)vm_atoi_16(valid_str(vm,
 		((arg[0] + arg[1]) * 2 + cr->position - 2) % 8192, 8));
-		cr->carry = cr->regist[arg[2]] == 0 ? 1 : 0;
+		cr->carry = cr->regist[arg[2] - 1] == 0 ? 1 : 0;
 		print_op(arg, cr, vm);
 	}
 	else if (tp[0] == 4 && (tp[1] == 1 || tp[1] == 2) && tp[2] == 1)
@@ -96,9 +101,14 @@ void			op_long_load_index(t_vm *vm, t_carriage *cr)
 		str = valid_str(vm, (cr->position + 2) % 8192,
 				(2 + tp[1] + tp[2]) * 2);
 		arg = cast_arg_ind(vm, tp, str, cr->position);
-		cr->regist[arg[2]] = (unsigned int)vm_atoi_16(valid_str(vm,
+		if (arg[2] <= 0 || arg[2] > 16)
+		{
+			push_position(tp, cr);
+			return ;
+		}
+		cr->regist[arg[2] - 1] = (unsigned int)vm_atoi_16(valid_str(vm,
 		((arg[0] + arg[1]) * 2 + cr->position - 2) % 8192, 8));
-		cr->carry = cr->regist[arg[2]] == 0 ? 1 : 0;
+		cr->carry = cr->regist[arg[2] - 1] == 0 ? 1 : 0;
 		print_op(arg, cr, vm);
 	}
 	push_position(tp, cr);

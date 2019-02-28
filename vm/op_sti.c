@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_sti.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 15:53:02 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/26 15:29:59 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/02/28 13:51:27 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,22 @@ void			op_sti(t_vm *vm, t_carriage *cr)
 	args = check_arg(vm_atoi_16(str_cotage));
 	if (args[0] == T_REG && args[2] != T_IND)
 	{
-		reg = (unsigned char)vm_atoi_16(valid_str(vm, cr->position + 2, 2)) - 1;
+		reg = (unsigned char)vm_atoi_16(valid_str(vm, cr->position + 2, 2));
+		if (reg <= 0 || reg > 16)
+		{
+			while (++dist < 3)
+			{
+				if (args[dist] == T_REG)
+					cr->position = cr->position + 2;
+				if (args[dist] == T_DIR || args[dist] == T_IND)
+					cr->position = cr->position + 4;
+			}
+			cr->position += 4;
+			return ;
+		}
 		t_args = save_arg(vm, cr, args, 0);
 		replace_map(vm, cr->position + ((t_args[1] + t_args[2]) % IDX_MOD) * 2,
-		vm_itoa_16(cr->regist[reg]), 8);
+		vm_itoa_16(cr->regist[reg - 1]), 8);
 		if ((vm->nbr_log & 4) == 4)
 			print_sti(t_args, cr);
 	}
