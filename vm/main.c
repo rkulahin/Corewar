@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/01 14:26:10 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/02 12:05:48 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_vm			*init_vm(void)
 	new->cycle = 0;
 	new->live = 0;
 	new->nbr_log = 0;
+	new->nbr_checks = 1;
 	new->nbr_car = 1;
 	new->cycle_to_die = CYCLE_TO_DIE;
 	new->die = CYCLE_TO_DIE;

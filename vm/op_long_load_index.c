@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 17:49:54 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/28 13:47:43 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/02 15:04:56 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,28 @@ static void			print_op(int *arg, t_carriage *cr, t_vm *vm)
 	if ((vm->nbr_log & 4) == 4)
 	{
 		ft_printf("P%5d | lldi %d %d r%d\n", cr->index, arg[0], arg[1], arg[2]);
-		ft_printf("     | -> load from %d + %d = %d (with pc %d)",
+		ft_printf("     | -> load from %d + %d = %d (with pc %d)\n",
 					arg[0], arg[1], arg[0] + arg[1],
 					((arg[0] + arg[1]) * 2 + cr->position) % 8192);
 	}
+}
+
+static int			check_ar(int **ar)
+{
+	int		i;
+	int		j;
+
+	j = 1;
+	i = 0;
+	if (ar[0][1] == 1)
+		ar[0][1] = -1;
+	else if (ar[0][1] > 1 && ar[0][1] < 17)
+		ar[0][1] = 0;
+	else
+		j = 0;
+	if (ar[0][2] <= 0 || ar[0][2] >= 17)
+		j = 0;
+	return (j);
 }
 
 void			op_long_load_index(t_vm *vm, t_carriage *cr)
@@ -86,7 +104,7 @@ void			op_long_load_index(t_vm *vm, t_carriage *cr)
 		str = valid_str(vm, (cr->position + 2) % 8192,
 				(tp[0] + tp[1] + tp[2]) * 2);
 		arg = cast_arg_norm(tp, str);
-		if (arg[2] <= 0 || arg[2] > 16)
+		if (!check_ar(&arg))
 		{
 			push_position(tp, cr);
 			return ;
@@ -101,7 +119,7 @@ void			op_long_load_index(t_vm *vm, t_carriage *cr)
 		str = valid_str(vm, (cr->position + 2) % 8192,
 				(2 + tp[1] + tp[2]) * 2);
 		arg = cast_arg_ind(vm, tp, str, cr->position);
-		if (arg[2] <= 0 || arg[2] > 16)
+		if (!check_ar(&arg))
 		{
 			push_position(tp, cr);
 			return ;

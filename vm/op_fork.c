@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 18:21:46 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/28 11:07:39 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/02 14:57:47 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		op_fork(t_vm *vm, t_carriage *cr)
 		ft_printf("P%5i | fork %i (%i)\n", cr->index, dir,
 	((dir % IDX_MOD) + cr->position / 2) % 4096);
 	cr->position = (cr->position + 6) % 8192;
-	run_to_command(vm, new);
+	run_to_command(vm, new, 1);
 	new->next = vm->carriage;
 	vm->carriage = new;
 }
@@ -66,9 +66,10 @@ void		op_lfork(t_vm *vm, t_carriage *cr)
 	new = copy_carriage(vm, cr);
 	new->position = ((dir * 2) + cr->position) % 8192;
 	if ((vm->nbr_log & 4) == 4)
-		ft_printf("P%5i | fork %i (%i)\n", cr->index, dir,
-	((dir % IDX_MOD) + cr->position) % 4096);
-	run_to_command(vm, new);
+		ft_printf("P%5i | lfork %i (%i)\n", cr->index, dir,
+	(dir + cr->position / 2) % 4096);
+	cr->position = (cr->position + 6) % 8192;
+	run_to_command(vm, new, 1);
 	new->next = vm->carriage;
 	vm->carriage = new;
 }

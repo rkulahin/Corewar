@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 19:20:29 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/28 11:03:22 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/02 11:56:58 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void		push_position(int *arg, t_carriage *car)
 
 	i = -1;
 	car->position = (car->position + 4) % 8192;
-	while (++i < 2)
+	while (++i < 3)
 	{
 		if (arg[i] == T_REG)
 			car->position = (car->position + 2) % 8192;

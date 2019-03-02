@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/01 13:59:15 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/02 11:35:56 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_carriage		*init_carriage(t_vm *vm, int index, int position)
 
 	new = (t_carriage *)malloc(sizeof(t_carriage));
 	new->carry = 0;
-	new->live = 0;
+	new->live = -1;
 	new->index = vm->nbr_car;
 	new->nbr_plr = index;
 	new->position = position;

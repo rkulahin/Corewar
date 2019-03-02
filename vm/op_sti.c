@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 15:53:02 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/28 13:51:27 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/02 17:25:17 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,22 @@ static void		print_sti(int *t_args, t_carriage *cr)
 	(cr->position / 2) + ((t_args[1] + t_args[2]) % IDX_MOD));
 }
 
+static int			check_ar(int **ar, int *args)
+{
+	int		j;
+
+	j = 1;
+	if (ar[0][0] <= 0 || ar[0][0] >= 17)
+		j = 0;
+	if ((ar[0][2] <= 0 || ar[0][2] >= 17) && args[2] == T_REG)
+		j = 0;
+	if (ar[0][2] == 1 && args[2] == T_REG)
+		ar[0][2] = -1;
+	else if (args[2] == T_REG)
+		ar[0][2] = 0;
+	return (j);
+}
+
 void			op_sti(t_vm *vm, t_carriage *cr)
 {
 	char	*str_cotage;
@@ -74,23 +90,15 @@ void			op_sti(t_vm *vm, t_carriage *cr)
 	if (args[0] == T_REG && args[2] != T_IND)
 	{
 		reg = (unsigned char)vm_atoi_16(valid_str(vm, cr->position + 2, 2));
-		if (reg <= 0 || reg > 16)
-		{
-			while (++dist < 3)
-			{
-				if (args[dist] == T_REG)
-					cr->position = cr->position + 2;
-				if (args[dist] == T_DIR || args[dist] == T_IND)
-					cr->position = cr->position + 4;
-			}
-			cr->position += 4;
-			return ;
-		}
 		t_args = save_arg(vm, cr, args, 0);
-		replace_map(vm, cr->position + ((t_args[1] + t_args[2]) % IDX_MOD) * 2,
-		vm_itoa_16(cr->regist[reg - 1]), 8);
-		if ((vm->nbr_log & 4) == 4)
-			print_sti(t_args, cr);
+		if (check_ar(&t_args, args))
+		{
+			replace_map(vm, cr->position + ((t_args[1] + t_args[2])
+			% IDX_MOD) * 2,
+			vm_itoa_16(cr->regist[reg - 1]), 8);
+			if ((vm->nbr_log & 4) == 4)
+				print_sti(t_args, cr);
+		}
 	}
 	while (++dist < 3)
 	{

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/01 14:25:31 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/02 12:15:44 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ t_carriage					*init_carriage(t_vm *vm, int index, int position);
 void						kill_carriage(t_vm *vm, t_carriage *cr);
 void						main_check(t_vm *vm, t_carriage *tmp);
 void						check_player(t_vm *vm);
-void						check_command(t_vm *vm, t_carriage *cr);
+void						check_command(t_vm *vm, t_carriage *cr, int j);
 void						main_cycle(t_vm *vm);
 /*
 ** func.c
@@ -136,7 +136,7 @@ int							*check_arg(int nb);
 /*
 ** other.c
 */
-void						run_to_command(t_vm *vm,t_carriage *cr);
+void						run_to_command(t_vm *vm,t_carriage *cr, int j);
 void						print_and_return(void);						// Написать
 void						win_player(t_players *last);
 void						replace_map(t_vm *vm, int position, char *ptr, int nb);

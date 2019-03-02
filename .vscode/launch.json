@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "/Users/rkulahin/Desktop/Corewar/virtual_machine",
-            "args": ["ex.cor"],
+            "args": ["jumper.cor"],
             "stopAtEntry": false,
             "cwd": "/Users/rkulahin/Desktop/Corewar",
             "environment": [],

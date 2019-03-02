@@ -6,13 +6,13 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/01 16:16:51 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/02 17:38:28 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-void	kill_carriage(t_vm *vm, t_carriage *cr)
+void			kill_carriage(t_vm *vm, t_carriage *cr)
 {
 	t_carriage		*tmp;
 
@@ -38,22 +38,8 @@ void	kill_carriage(t_vm *vm, t_carriage *cr)
 	}
 }
 
-void	main_check(t_vm *vm, t_carriage *tmp)
+static void		change_cycle(t_vm *vm)
 {
-	t_carriage		*tmp2;
-
-	tmp = vm->carriage;
-	while (tmp)
-	{
-		tmp2 = tmp->next;
-		if (tmp->live < vm->cycle_to_die - vm->die)
-		{
-			kill_carriage(vm, tmp);
-			tmp = tmp2;
-		}
-		else
-			tmp = tmp->next;
-	}
 	if (vm->live >= NBR_LIVE || vm->nbr_checks >= MAX_CHECKS)
 	{
 		vm->die -= CYCLE_DELTA;
@@ -64,12 +50,33 @@ void	main_check(t_vm *vm, t_carriage *tmp)
 		vm->cycle_to_die += 1;
 	else
 		vm->cycle_to_die = vm->cycle + vm->die;
-	if (!vm->carriage)
-		check_player(vm);
-	vm->nbr_checks++;
 }
 
-void	check_player(t_vm *vm)
+void			main_check(t_vm *vm, t_carriage *tmp)
+{
+	t_carriage		*tmp2;
+
+	tmp = vm->carriage;
+	while (tmp)
+	{
+		tmp2 = tmp->next;
+		if (tmp->live < vm->cycle_to_die - vm->die)
+		{
+			if (tmp->live < 0)
+				tmp->live += 1;
+			kill_carriage(vm, tmp);
+			tmp = tmp2;
+		}
+		else
+			tmp = tmp->next;
+	}
+	change_cycle(vm);
+	if (!vm->carriage)
+		check_player(vm);
+	vm->nbr_checks += 1;
+}
+
+void			check_player(t_vm *vm)
 {
 	t_players	*tmp;
 	t_players	*last;
@@ -86,18 +93,17 @@ void	check_player(t_vm *vm)
 		win_player(last);
 }
 
-void	check_command(t_vm *vm, t_carriage *cr)
+void			check_command(t_vm *vm, t_carriage *cr, int j)
 {
 	int		i;
 	int		old_pos;
 
-	run_to_command(vm, cr);
 	i = vm_atoi_16(cr->operation);
 	if (i > 0 && i <= 16)
 	{
+		j = 1;
 		old_pos = cr->position;
 		g_func[i - 1](vm, cr);
-		cr->cycle = cr->cycle + 1;
 		if (((vm->nbr_log & 16) == 16 && i != 9) ||
 		((vm->nbr_log & 16) == 16 && cr->carry == 0 && i == 9))
 		{
@@ -105,26 +111,27 @@ void	check_command(t_vm *vm, t_carriage *cr)
 			ABS((old_pos - cr->position) / 2), old_pos / 2, cr->position / 2);
 			while (old_pos != cr->position)
 			{
-				ft_printf("%c%c ", vm->map[old_pos], vm->map[old_pos + 1]);
+				ft_printf("%c%c ", vm->map[old_pos % 8192],
+				vm->map[(old_pos + 1) % 8192]);
 				old_pos = (old_pos + 2) % 8192;
 			}
 			ft_printf("\n");
 		}
-		// cr->operation[0] = vm->map[cr->position % 8192];
-		// cr->operation[1] = vm->map[(cr->position + 1) % 8192];
 	}
-		cr->position = cr->position % 8192;
-		cr->operation[0] = vm->map[cr->position];
-		cr->operation[1] = vm->map[(cr->position + 1) % 8192];
-		i = (unsigned char)vm_atoi_16(cr->operation);
-		if (i >= 1 && i <= 16)
-		cr->cycle = g_optab[i - 1].num_cycle + vm->cycle;
-		else
-		cr->cycle = vm->cycle;
-	// run_to_command(vm, cr);
+	run_to_command(vm, cr, j);
 }
 
-void	main_cycle(t_vm *vm)
+static	void	print_cycle(t_vm *vm)
+{
+	if (((vm->nbr_checks == 1) && (((vm->nbr_log & 2) == 2) &&
+	((vm->cycle_to_die - vm->cycle == vm->die && vm->cycle != 0) ||
+	vm->die < 0))) && (vm->die != CYCLE_TO_DIE))
+		ft_printf("Cycle to die is now %i\n", vm->die);
+	if ((vm->nbr_log & 2) == 2)
+		ft_printf("It is now cycle %i\n", vm->cycle + 1);
+}
+
+void			main_cycle(t_vm *vm)
 {
 	int				check;
 	t_carriage		*car;
@@ -134,6 +141,9 @@ void	main_cycle(t_vm *vm)
 	while (check)
 	{
 		car = vm->carriage;
+		// ft_printf("INDEX %i\n", car->index);
+		if (vm->cycle == 2187)
+			write(0, 0, 0);
 		if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
 			print_and_return();
 		if (vm->cycle >= vm->cycle_to_die)
@@ -144,15 +154,11 @@ void	main_cycle(t_vm *vm)
 		{
 			if (car->cycle <= vm->cycle)
 			{
-				check_command(vm, car);
+				check_command(vm, car, 0);
 			}
 			car = car->next;
 		}
-		if ((vm->nbr_log & 2) == 2)
-			ft_printf("It is now cycle %i\n", vm->cycle + 1);
-		if ((vm->nbr_checks == 1) && ((vm->nbr_log & 2) == 2) && ((vm->cycle_to_die - vm->cycle == vm->die && vm->cycle != 0) || vm->die < 0))
-			ft_printf("Cycle to die is now %i\n", vm->die);
-	// 		ft_printf("MAP :\n");
+	// 									ft_printf("Cycle %i\nMAP :\n", vm->cycle);
 	// i = -1;
 	// while (++i < MEM_SIZE * 2)
 	// {
@@ -172,6 +178,9 @@ void	main_cycle(t_vm *vm)
 	// 		ft_printf("%c", vm->map[i]);
 	// }
 	// ft_printf("\nsize = %d\n", i);
+		// if (vm->cycle == 68)
+		// 	exit(1);
+		print_cycle(vm);
 		vm->cycle++;
 	}
 }
