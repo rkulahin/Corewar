@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:32:24 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/22 13:55:11 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/01 13:59:32 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,6 @@ header_t	*parce_champ(int fd)
 		champ->prog[i] = reverse(champ->prog[i]);
 		i++;
 	}
+		champ->prog[i] = reverse(champ->prog[i]);
 	return (champ);
 }

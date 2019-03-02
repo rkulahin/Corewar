@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/28 10:37:59 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/01 13:59:15 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void			vm_map(t_vm *vm, t_players *plr, int i, int k)
 	{
 		i = (plr->index - 1) * byt;
 		j = 0;
-		while (j < plr->champ->prog_size / 4)
+		while (j < plr->champ->prog_size / 4 + plr->champ->prog_size % 4)
 		{
 			k = -1;
 			str = vm_itoa_16(plr->champ->prog[j]);

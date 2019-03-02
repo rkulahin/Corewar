@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/28 10:29:58 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/01 14:26:10 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int				main(int ac, char **av)
 	all = parce_argv(ac, av);
 	ft_memset(all->map, '0', MEM_SIZE * 2);
 	vm_map(all, all->players, 0, 0);
+	privetstvie(all);
 	main_cycle(all);
 	// test(all);
 	// system("Leaks virtual_machine");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/26 14:42:14 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/03/01 14:25:31 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ void						run_to_command(t_vm *vm,t_carriage *cr);
 void						print_and_return(void);						// Написать
 void						win_player(t_players *last);
 void						replace_map(t_vm *vm, int position, char *ptr, int nb);
+void						privetstvie(t_vm *vm);
+
 /*
 ** op_live.c
 */
