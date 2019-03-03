@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 19:20:29 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/02 11:56:58 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 10:40:30 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void			op_add(t_vm *vm, t_carriage *car)
 		str[4] = '\0';
 		reg2 = (unsigned int)vm_atoi_16(str + 2);
 		str[2] = '\0';
-		car->regist[reg3 - 1] = reg2 + (unsigned int)vm_atoi_16(str);
+		car->regist[reg3 - 1] = car->regist[reg2 - 1] +
+		car->regist[(unsigned int)vm_atoi_16(str) - 1];
 		car->carry = car->regist[reg3 - 1] == 0 ? 1 : 0;
 		if ((vm->nbr_log & 4) == 4)
 			ft_printf("P    %d | add r%d r%d r%d\n", car->index,
@@ -68,7 +69,8 @@ void			op_sub(t_vm *vm, t_carriage *car)
 		str[4] = '\0';
 		reg2 = (unsigned int)vm_atoi_16(str + 2);
 		str[2] = '\0';
-		car->regist[reg3 - 1] = (unsigned int)vm_atoi_16(str) - reg2;
+		car->regist[reg3 - 1] = car->regist[(unsigned int)vm_atoi_16(str) - 1]
+		- car->regist[reg2 - 1];
 		car->carry = car->regist[reg3 - 1] == 0 ? 1 : 0;
 		if ((vm->nbr_log & 4) == 4)
 			ft_printf("P    %d | sub r%d r%d r%d\n", car->index,

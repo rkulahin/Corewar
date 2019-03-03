@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 12:28:39 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/02 14:15:06 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 11:10:19 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int			find_ind(t_vm *vm, int pc, char *str)
 	return (t_ind);
 }
 
-static int			check_ar(int **ar)
+static int			check_ar(int **ar, int *args)
 {
 	int		i;
 	int		j;
@@ -33,8 +33,10 @@ static int			check_ar(int **ar)
 	{
 		if (ar[0][i] == 1)
 			ar[0][i] = -1;
-		else if (ar[0][i] > 1 && ar[0][i] < 17)
+		else if (ar[0][i] > 1 && ar[0][i] < 17 && args[i] != T_REG)
 			ar[0][i] = 0;
+		else if (ar[0][i] > 1 && ar[0][i] < 17)
+			ar[0][i] = ar[0][i];
 		else
 			j = 0;
 	}
@@ -86,7 +88,7 @@ void				op_and(t_vm *vm, t_carriage *cr)
 	ar = save_arg(&j, vm, cr, args);
 	if (args[0] != 0 && args[1] != 0 && args[2] == T_REG)
 	{
-		if (check_ar(&ar))
+		if (check_ar(&ar, args))
 		{
 			cr->regist[ar[2] - 1] = ar[0] & ar[1];
 			cr->carry = (cr->regist[ar[2] - 1] == 0 ? 1 : 0);
@@ -111,7 +113,7 @@ void				op_or(t_vm *vm, t_carriage *cr)
 	ar = save_arg(&j, vm, cr, args);
 	if (args[0] != 0 && args[1] != 0 && args[2] == T_REG)
 	{
-		if (check_ar(&ar))
+		if (check_ar(&ar, args))
 		{
 			cr->regist[ar[2] - 1] = ar[0] | ar[1];
 			cr->carry = (cr->regist[ar[2] - 1] == 0 ? 1 : 0);
@@ -121,6 +123,16 @@ void				op_or(t_vm *vm, t_carriage *cr)
 		}
 	}
 	cr->position = cr->position + j + 4;
+}
+
+static void			replace_ar(int **ar, int *args, t_carriage *cr)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 2)
+		if (args[i] == T_REG)
+			ar[0][i] = cr->regist[ar[0][i] - 1];
 }
 
 void				op_xor(t_vm *vm, t_carriage *cr)
@@ -136,8 +148,9 @@ void				op_xor(t_vm *vm, t_carriage *cr)
 	ar = save_arg(&j, vm, cr, args);
 	if (args[0] != 0 && args[1] != 0 && args[2] == T_REG)
 	{
-		if (check_ar(&ar))
+		if (check_ar(&ar, args))
 		{
+			replace_ar(&ar, args, cr);
 			cr->regist[ar[2] - 1] = ar[0] ^ ar[1];
 			cr->carry = (cr->regist[ar[2] - 1] == 0 ? 1 : 0);
 			if ((vm->nbr_log & 4) == 4)

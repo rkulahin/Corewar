@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/02 17:38:28 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 11:42:38 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void			main_cycle(t_vm *vm)
 	{
 		car = vm->carriage;
 		// ft_printf("INDEX %i\n", car->index);
-		if (vm->cycle == 2187)
+		if (vm->cycle == 2146)
 			write(0, 0, 0);
 		if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
 			print_and_return();

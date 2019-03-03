@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 16:43:49 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/02 14:59:23 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 11:53:31 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,25 +74,52 @@ static void			print_op(int *arg, t_carriage *cr, t_vm *vm)
 	}
 }
 
-static int			check_ar(int **ar)
+static int			check_ar(int **ar, int *args)
 {
 	int		i;
 	int		j;
 
 	j = 1;
 	i = 0;
-	if (ar[0][1] == 1)
-		ar[0][1] = -1;
-	else if (ar[0][1] > 1 && ar[0][1] < 17)
-		ar[0][1] = 0;
-	else
-		j = 0;
+	while (++i < 2)
+	{
+		if (ar[0][i] == 1)
+			ar[0][i] = -1;
+		else if (ar[0][i] > 1 && ar[0][i] < 17 && args[i] != T_REG)
+			ar[0][i] = 0;
+		else if (ar[0][i] > 1 && ar[0][i] < 17)
+			ar[0][i] = ar[0][i];
+		else if (args[i] == T_REG && 
+		else
+			j = 0;
+	}
 	if (ar[0][2] <= 0 || ar[0][2] >= 17)
 		j = 0;
 	return (j);
 }
 
-void			op_load_index(t_vm *vm, t_carriage *cr)
+static void			replace_ar(int **ar, int *args, t_carriage *cr)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 2)
+		if (args[i] == T_REG)
+			ar[0][i] = cr->regist[ar[0][i] - 1];
+}
+
+static void			check(t_vm *vm, t_carriage *cr, int *arg, int *tp)
+{
+	if (check_ar(&arg, tp))
+	{
+		replace_ar(&arg, tp, cr);
+		cr->regist[arg[2] - 1] = (unsigned int)vm_atoi_16(valid_str(vm,
+		(((arg[0] + arg[1]) % IDX_MOD) * 2 + cr->position - 2) % 8192, 8));
+		print_op(arg, cr, vm);
+	}
+}
+
+void				op_load_index(t_vm *vm, t_carriage *cr)
 {
 	int				*tp;
 	int				*arg;
@@ -104,28 +131,14 @@ void			op_load_index(t_vm *vm, t_carriage *cr)
 		str = valid_str(vm, (cr->position + 2) % 8192,
 				(tp[0] + tp[1] + tp[2]) * 2);
 		arg = cast_arg_norm(tp, str);
-		if (!check_ar(&arg))
-		{
-			push_position(tp, cr);
-			return ;
-		}
-		cr->regist[arg[2] - 1] = (unsigned int)vm_atoi_16(valid_str(vm,
-		(((arg[0] + arg[1]) % IDX_MOD) * 2 + cr->position - 2) % 8192, 8));
-		print_op(arg, cr, vm);
+		check(vm, cr, arg, tp);
 	}
 	else if (tp[0] == 4 && (tp[1] == 1 || tp[1] == 2) && tp[2] == 1)
 	{
 		str = valid_str(vm, (cr->position + 2) % 8192,
 				(2 + tp[1] + tp[2]) * 2);
 		arg = cast_arg_ind(vm, tp, str, cr->position);
-		if (!check_ar(&arg))
-		{
-			push_position(tp, cr);
-			return ;
-		}
-		cr->regist[arg[2] - 1] = (unsigned int)vm_atoi_16(valid_str(vm,
-		(((arg[0] + arg[1]) % IDX_MOD) * 2 + cr->position - 2) % 8192, 8));
-		print_op(arg, cr, vm);
+		check(vm, cr, arg, tp);
 	}
 	push_position(tp, cr);
 }
