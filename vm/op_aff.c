@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 14:39:34 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/02 12:10:52 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 19:14:25 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,6 @@ void		op_aff(t_vm *vm, t_carriage *cr)
 		cr->position = cr->position + 8;
 	else if (args[0] == T_DIR)
 		cr->position = cr->position + 12;
+	else
+		cr->position += 4;
 }

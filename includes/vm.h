@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/02 12:15:44 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 14:14:57 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,13 @@ void						op_sti(t_vm *vm, t_carriage *cr);
 ** op_and.c
 */
 void						op_and(t_vm *vm, t_carriage *cr);
+/*
+** op_or.c
+*/
 void						op_or(t_vm *vm, t_carriage *cr);
+/*
+** op_xor.c
+*/
 void						op_xor(t_vm *vm, t_carriage *cr);
 /*
 ** op_add.c

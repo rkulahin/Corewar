@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/03 11:42:38 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 18:59:07 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void			main_check(t_vm *vm, t_carriage *tmp)
 	while (tmp)
 	{
 		tmp2 = tmp->next;
-		if (tmp->live < vm->cycle_to_die - vm->die)
+		if (tmp->live <= vm->cycle_to_die - vm->die)
 		{
 			if (tmp->live < 0)
 				tmp->live += 1;
@@ -118,7 +118,7 @@ void			check_command(t_vm *vm, t_carriage *cr, int j)
 			ft_printf("\n");
 		}
 	}
-	run_to_command(vm, cr, j);
+	// run_to_command(vm, cr, j);
 }
 
 static	void	print_cycle(t_vm *vm)
@@ -131,6 +131,21 @@ static	void	print_cycle(t_vm *vm)
 		ft_printf("It is now cycle %i\n", vm->cycle + 1);
 }
 
+static void		check_new_command(t_vm *vm, t_carriage *cr)
+{
+	int		i;
+
+	if (cr->cycle == -1)
+		cr->position = (cr->position + 2) % 8192;
+	cr->operation[0] = vm->map[cr->position % 8192];
+	cr->operation[1] = vm->map[(cr->position + 1) % 8192];
+	i = (unsigned char)vm_atoi_16(cr->operation);
+	if (i >= 1 && i <= 16)
+		cr->cycle = g_optab[i - 1].num_cycle + vm->cycle;
+	else
+		cr->cycle = -1;
+}
+
 void			main_cycle(t_vm *vm)
 {
 	int				check;
@@ -141,46 +156,50 @@ void			main_cycle(t_vm *vm)
 	while (check)
 	{
 		car = vm->carriage;
-		// ft_printf("INDEX %i\n", car->index);
-		if (vm->cycle == 2146)
+		if (vm->cycle == 8910)
 			write(0, 0, 0);
 		if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
 			print_and_return();
-		if (vm->cycle >= vm->cycle_to_die)
-			main_check(vm, NULL);
 		if (!car)
 			print_and_return();
 		while (car)
 		{
-			if (car->cycle <= vm->cycle)
-			{
+			if (car->cycle <= vm->cycle && car->cycle != -1)
 				check_command(vm, car, 0);
-			}
 			car = car->next;
 		}
-	// 									ft_printf("Cycle %i\nMAP :\n", vm->cycle);
-	// i = -1;
-	// while (++i < MEM_SIZE * 2)
-	// {
-	// 	if (i % 128 == 0)
-	// 		ft_printf("\n");
-	// 	if (i == vm->carriage->position)
-	// 		ft_printf(GRE"L"EOC);
-	// 	if (i == 0 || i == 1)
-	// 		ft_printf(RED"%c"EOC, vm->map[i]);
-	// 	else if (i == (MEM_SIZE * 2) / vm->nbr_plrs || i == (MEM_SIZE * 2) / vm->nbr_plrs + 1)
-	// 		ft_printf(YEL"%c"EOC, vm->map[i]);
-	// 	else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 + 1)
-	// 		ft_printf(BLU"%c"EOC, vm->map[i]);
-	// 	else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 + 1)
-	// 		ft_printf(GRE"%c"EOC, vm->map[i]);
-	// 	else
-	// 		ft_printf("%c", vm->map[i]);
-	// }
-	// ft_printf("\nsize = %d\n", i);
-		// if (vm->cycle == 68)
-		// 	exit(1);
+		car = vm->carriage;
+		while (car)
+		{
+			if (car->cycle <= vm->cycle)
+				check_new_command(vm, car);
+			car = car->next;
+		}
+		if (vm->cycle >= vm->cycle_to_die)
+			main_check(vm, NULL);
 		print_cycle(vm);
 		vm->cycle++;
 	}
 }
+
+				// 	ft_printf("Cycle %i\nMAP :\n", vm->cycle);
+				// 	i = -1;
+				// 	while (++i < MEM_SIZE * 2)
+				// 	{
+				// 		if (i % 128 == 0)
+				// 			ft_printf("\n");
+				// 		if (i == car->position)
+				// 			ft_printf(GRE"L"EOC);
+				// 		if (i == 0 || i == 1)
+				// 			ft_printf(RED"%c"EOC, vm->map[i]);
+				// 		else if (i == (MEM_SIZE * 2) / vm->nbr_plrs || i == (MEM_SIZE * 2) / vm->nbr_plrs + 1)
+				// 			ft_printf(YEL"%c"EOC, vm->map[i]);
+				// 		else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 + 1)
+				// 			ft_printf(BLU"%c"EOC, vm->map[i]);
+				// 		else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 + 1)
+				// 			ft_printf(GRE"%c"EOC, vm->map[i]);
+				// 		else
+				// 			ft_printf("%c", vm->map[i]);
+				// 	}
+				// 	ft_printf("\nsize = %d\n", i);
+				// 	}

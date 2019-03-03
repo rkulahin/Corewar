@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 12:28:39 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/03 11:10:19 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 17:07:08 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,145 +18,76 @@ static int			find_ind(t_vm *vm, int pc, char *str)
 	int		nb;
 
 	nb = (short)vm_atoi_16(str);
-	t_ind = vm_atoi_16(valid_str(vm, pc - 2 + nb, 8));
+	t_ind = (unsigned int)vm_atoi_16(valid_str(vm, pc - 2 + nb, 8));
 	return (t_ind);
 }
 
-static int			check_ar(int **ar, int *args)
+static int			*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 {
+	int		*t_args;
 	int		i;
-	int		j;
 
-	j = 1;
+	t_args = (int *)malloc(sizeof(int) * 3);
 	i = -1;
-	while (++i < 2)
-	{
-		if (ar[0][i] == 1)
-			ar[0][i] = -1;
-		else if (ar[0][i] > 1 && ar[0][i] < 17 && args[i] != T_REG)
-			ar[0][i] = 0;
-		else if (ar[0][i] > 1 && ar[0][i] < 17)
-			ar[0][i] = ar[0][i];
-		else
-			j = 0;
-	}
-	if (ar[0][2] <= 0 || ar[0][2] >= 17)
-		j = 0;
-	return (j);
-}
-
-static int			*save_arg(int *j, t_vm *vm, t_carriage *cr, int *args)
-{
-	int		i;
-	int		*ar;
-
-	i = -1;
-	ar = (int *)malloc(sizeof(int) * 4);
 	while (++i < 3)
-		if (args[i] == T_REG)
+		if (args[i] == T_IND)
 		{
-			ar[i] = (unsigned char)vm_atoi_16(valid_str(vm, cr->position +
+			t_args[i] = find_ind(vm, cr->position, valid_str(vm, cr->position +
+			2 + *j, 4));
+			*j += 4;
+		}
+		else if (args[i] == T_REG)
+		{
+			t_args[i] = (unsigned char)vm_atoi_16(valid_str(vm, cr->position +
 			2 + *j, 2));
 			*j += 2;
 		}
 		else if (args[i] == T_DIR)
 		{
-			ar[i] = (int)vm_atoi_16(valid_str(vm, cr->position + 2 + *j, 8));
+			t_args[i] = (unsigned int)vm_atoi_16(valid_str(vm, cr->position +
+			2 + *j, 8));
 			*j += 8;
 		}
-		else if (args[i] == T_IND)
-		{
-			ar[i] = find_ind(vm, cr->position, (valid_str(vm, cr->position +
-			2 + *j, 2)));
-			*j += 4;
-		}
-	if (ar[0] == 0 || ar[1] == 0)
-		ar[0] = 100;
-	return (ar);
+	return (t_args);
+}
+
+static int			check(t_carriage *cr, int **args_number, int *args_type)
+{
+	int		j;
+	int		i;
+
+	i = -1;
+	j = 1;
+	if (args_type[2] != T_REG || args_number[0][0] <= 0 ||
+	args_number[0][0] >= 17)
+		j = 0;
+	while (++i < 2)
+	{
+		if (args_type[i] == T_REG && args_number[0][i] > 0 &&
+		args_number[0][i] < 17)
+			args_number[0][i] = cr->regist[args_number[0][i] - 1];
+		else if (args_type[i] == T_REG)
+			j = 0;
+	}
+	return (j);
 }
 
 void				op_and(t_vm *vm, t_carriage *cr)
 {
-	char	*str_cotage;
-	int		*args;
-	int		*ar;
-	int		j;
+	int		*args_type;
+	int		*args_number;
+	int		new_position;
 
-	j = 0;
-	str_cotage = valid_str(vm, cr->position, 2);
-	args = check_arg(vm_atoi_16(str_cotage));
-	ar = save_arg(&j, vm, cr, args);
-	if (args[0] != 0 && args[1] != 0 && args[2] == T_REG)
+	new_position = 0;
+	args_type = check_arg(vm_atoi_16(valid_str(vm, cr->position, 2)));
+	args_number = save_arg(vm, cr, args_type, &new_position);
+	if (check(cr, &args_number, args_type))
 	{
-		if (check_ar(&ar, args))
-		{
-			cr->regist[ar[2] - 1] = ar[0] & ar[1];
-			cr->carry = (cr->regist[ar[2] - 1] == 0 ? 1 : 0);
-			if ((vm->nbr_log & 4) == 4)
-				ft_printf("P%5i | and %i %i r%i\n",
-				cr->index, ar[0], ar[1], ar[2]);
-		}
+		cr->regist[args_number[2] - 1] = args_number[0] & args_number[1];
+		cr->carry = (cr->regist[args_number[2] - 1] == 0 ? 1 : 0);
+		if ((vm->nbr_log & 4) == 4)
+			ft_printf("P%5i | and %i %i r%i\n",
+			cr->index, args_number[0], args_number[1], args_number[2]);
 	}
-	cr->position = cr->position + j + 4;
-}
-
-void				op_or(t_vm *vm, t_carriage *cr)
-{
-	char	*str_cotage;
-	int		*args;
-	int		*ar;
-	int		j;
-
-	j = 0;
-	str_cotage = valid_str(vm, cr->position, 2);
-	args = check_arg(vm_atoi_16(str_cotage));
-	ar = save_arg(&j, vm, cr, args);
-	if (args[0] != 0 && args[1] != 0 && args[2] == T_REG)
-	{
-		if (check_ar(&ar, args))
-		{
-			cr->regist[ar[2] - 1] = ar[0] | ar[1];
-			cr->carry = (cr->regist[ar[2] - 1] == 0 ? 1 : 0);
-			if ((vm->nbr_log & 4) == 4)
-				ft_printf("P%5i | or %i %i r%i\n",
-				cr->index, ar[0], ar[1], ar[2]);
-		}
-	}
-	cr->position = cr->position + j + 4;
-}
-
-static void			replace_ar(int **ar, int *args, t_carriage *cr)
-{
-	int		i;
-
-	i = -1;
-	while (++i < 2)
-		if (args[i] == T_REG)
-			ar[0][i] = cr->regist[ar[0][i] - 1];
-}
-
-void				op_xor(t_vm *vm, t_carriage *cr)
-{
-	char	*str_cotage;
-	int		*args;
-	int		*ar;
-	int		j;
-
-	j = 0;
-	str_cotage = valid_str(vm, cr->position, 2);
-	args = check_arg(vm_atoi_16(str_cotage));
-	ar = save_arg(&j, vm, cr, args);
-	if (args[0] != 0 && args[1] != 0 && args[2] == T_REG)
-	{
-		if (check_ar(&ar, args))
-		{
-			replace_ar(&ar, args, cr);
-			cr->regist[ar[2] - 1] = ar[0] ^ ar[1];
-			cr->carry = (cr->regist[ar[2] - 1] == 0 ? 1 : 0);
-			if ((vm->nbr_log & 4) == 4)
-				ft_printf("P%5i | xor %i %i r%i\n",
-				cr->index, ar[0], ar[1], ar[2]);
-		}
-	}
-	cr->position = cr->position + j + 4;
+	cr->position += new_position + 4;
 }

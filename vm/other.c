@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/02 13:32:48 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 18:19:46 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void		run_to_command(t_vm *vm, t_carriage *cr, int j)
 	if (i >= 1 && i <= 16)
 		cr->cycle = g_optab[i - 1].num_cycle + vm->cycle;
 	else
-		cr->cycle = vm->cycle + 1;
+		cr->cycle = vm->cycle;
 }
 
 void		replace_map(t_vm *vm, int position, char *ptr, int nb)

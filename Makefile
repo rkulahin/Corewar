@@ -6,7 +6,7 @@
 #    By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/26 13:22:53 by rkulahin          #+#    #+#              #
-#    Updated: 2019/02/23 16:47:48 by rkulahin         ###   ########.fr        #
+#    Updated: 2019/03/03 16:47:22 by rkulahin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,16 +27,19 @@ SRC = main.c \
 		other.c \
 		op_live.c \
 		op_st.c \
-		op_add_sub.c \
+		op_add.c \
+		op_sub.c \
 		op_fork.c \
 		op_and.c \
+		op_or.c \
+		op_xor.c \
 		op_sti.c \
 		op_load_index.c \
 		op_load.c \
 		op_long_load_index.c \
 		op_long_load.c \
 		op_zjmp.c \
-		op_aff.c 
+		op_aff.c  
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 INCL = -I includes/
 FLAGS =	-g -Wall -Wextra -Werror

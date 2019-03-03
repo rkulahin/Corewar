@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 14:36:08 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/28 14:24:03 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 15:06:15 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,44 +43,10 @@ void			op_st(t_vm *vm, t_carriage *cr)
 	int		f;
 	char	*ff;
 	int		s;
-	// int		i;
-	// int		b;
 
 	args = check_arg(vm_atoi_16(valid_str(vm, cr->position, 2)));
 	ff = valid_str(vm, cr->position + 2, 2);
 	f = (unsigned char)vm_atoi_16(ff);
-	// if (f == 0)
-	// {
-	// 	ft_printf("%i %i\n", cr->position / 128, cr->position % 128);
-	// 	ft_printf("cycle %i\n", vm->cycle);
-	// 				ft_printf("MAP :\n");
-	// i = -1;
-	// b = -1;
-	// while (++i < MEM_SIZE * 2)
-	// {
-	// 	if ((i % 128) == 0)
-	// 	{
-	// 		ft_printf("\n");
-	// 		ft_printf("line = %d|  ", ++b);
-	// 	}
-	// 	if (i == 7924)
-	// 		ft_printf(YEL"L"EOC);
-	// 	if (i == 0 || i == 1)
-	// 		ft_printf(RED"%c"EOC, vm->map[i]);
-	// 	else if (i == (MEM_SIZE * 2) / vm->nbr_plrs || i == (MEM_SIZE * 2) / vm->nbr_plrs + 1)
-	// 		ft_printf(YEL"%c"EOC, vm->map[i]);
-	// 	else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 + 1)
-	// 		ft_printf(BLU"%c"EOC, vm->map[i]);
-	// 	else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 + 1)
-	// 		ft_printf(GRE"%c"EOC, vm->map[i]);
-	// 	else if (i <= 1225)
-	// 		ft_printf(RED"%c"EOC, vm->map[i]);
-	// 	else
-	// 		ft_printf("%c", vm->map[i]);
-	// }
-	// ft_printf("\nsize = %d\n", i);
-	// exit(1);
-	// }
 	if (f <= 0 || f > 16)
 	{
 		cr->position = perehod(args, cr);

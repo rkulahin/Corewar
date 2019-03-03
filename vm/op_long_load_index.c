@@ -6,138 +6,95 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 17:49:54 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/03 11:42:29 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/03 17:06:28 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static int		*cast_arg_norm(int type[3], char *str)
+static int		find_ind(t_vm *vm, char *str, int position)
 {
-	int			*arg;
+	int		t_ind;
+	int		nb;
 
-	arg = (int *)malloc(sizeof(int) * 3);
-	arg[2] = (unsigned char)vm_atoi_16(str + ((type[0] + type[1]) * 2));
-	str[(type[0] + type[1]) * 2] = '\0';
-	if (type[1] == 1)
-		arg[1] = (unsigned char)vm_atoi_16(str + (type[0] * 2));
-	else
-		arg[1] = (short)vm_atoi_16(str + (type[0] * 2));
-	str[type[0] * 2] = '\0';
-	if (type[0] == 1)
-		arg[0] = (unsigned char)vm_atoi_16(str);
-	else
-		arg[0] = (short)vm_atoi_16(str);
-	return (arg);
+	nb = (short)vm_atoi_16(str);
+	t_ind = vm_atoi_16(valid_str(vm, (nb % IDX_MOD) * 2 + position - 2, 8));
+	return (t_ind);
 }
 
-static int		*cast_arg_ind(t_vm *vm, int type[3], char *str, int position)
+static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 {
-	int			*arg;
-
-	arg = (int *)malloc(sizeof(int) * 3);
-	arg[2] = (unsigned char)vm_atoi_16(str + ((2 + type[1]) * 2));
-	str[(2 + type[1]) * 2] = '\0';
-	if (type[1] == 1)
-		arg[1] = (unsigned char)vm_atoi_16(str + 4);
-	else
-		arg[1] = (short)vm_atoi_16(str + 4);
-	str[4] = '\0';
-	arg[0] = (unsigned int)valid_str(vm, ((vm_atoi_16(str) % IDX_MOD) * 2 +
-											position - 2) % 8192, 8);
-	return (arg);
-}
-
-static void		push_position(int *tp, t_carriage *car)
-{
-	int			i;
-
-	i = -1;
-	car->position = (car->position + 4) % 8192;
-	while (++i < 3)
-	{
-		if (tp[i] == T_REG)
-			car->position = (car->position + 2) % 8192;
-		else if (tp[i] == T_IND || tp[i] == T_DIR)
-			car->position = (car->position + 4) % 8192;
-	}
-}
-
-static void			print_op(int *arg, t_carriage *cr, t_vm *vm)
-{
-	if ((vm->nbr_log & 4) == 4)
-	{
-		ft_printf("P%5d | lldi %d %d r%d\n", cr->index, arg[0], arg[1], arg[2]);
-		ft_printf("     | -> load from %d + %d = %d (with pc %d)\n",
-					arg[0], arg[1], arg[0] + arg[1],
-					((arg[0] + arg[1]) * 2 + cr->position) % 8192);
-	}
-}
-
-static int			check_ar(int **ar, int *args)
-{
+	int		*t_args;
 	int		i;
-	int		j;
 
-	j = 1;
+	t_args = (int *)malloc(sizeof(int) * 3);
 	i = -1;
+	while (++i < 3)
+		if (args[i] == T_IND)
+		{
+			t_args[i] = (unsigned int)find_ind(vm, valid_str(vm, cr->position +
+			2 + *j, 4), cr->position);
+			*j += 4;
+		}
+		else if (args[i] == T_REG)
+		{
+			t_args[i] = (unsigned char)vm_atoi_16(valid_str(vm, cr->position +
+			2 + *j, 2));
+			*j += 2;
+		}
+		else if (args[i] == T_DIR)
+		{
+			t_args[i] = (unsigned int)vm_atoi_16(valid_str(vm, cr->position +
+			2 + *j, 8));
+			*j += 8;
+		}
+	return (t_args);
+}
+
+static int		check(t_carriage *cr, int **args_number, int *args_type)
+{
+	int		j;
+	int		i;
+
+	i = -1;
+	j = 1;
+	if (args_type[1] == T_IND || args_type[2] != T_REG ||
+		(args_number[0][2] <= 0 && args_number[0][2] > 16))
+		j = 0;
 	while (++i < 2)
 	{
-		if (ar[0][i] == 1)
-			ar[0][i] = -1;
-		else if (ar[0][i] > 1 && ar[0][i] < 17 && args[i] != T_REG)
-			ar[0][i] = 0;
-		else if (ar[0][i] > 1 && ar[0][i] < 17)
-			ar[0][i] = ar[0][i];
-		else
+		if (args_type[i] == T_REG && args_number[0][i] > 0 &&
+		args_number[0][i] < 17)
+			args_number[0][i] = cr->regist[args_number[0][i] - 1];
+		else if (args_type[i] == T_REG)
 			j = 0;
 	}
-	if (ar[0][2] <= 0 || ar[0][2] >= 17)
-		j = 0;
 	return (j);
 }
 
-static void			replace_ar(int **ar, int *args, t_carriage *cr)
+static void			print_v4(t_carriage *cr, int *ar)
 {
-	int		i;
-
-	i = -1;
-	while (++i < 2)
-		if (args[i] == T_REG)
-			ar[0][i] = cr->regist[ar[0][i] - 1];
-}
-
-static void			check(t_vm *vm, t_carriage *cr, int *arg, int *tp)
-{
-	if (check_ar(&arg, tp))
-	{
-		replace_ar(&arg, tp, cr);
-		cr->regist[arg[2] - 1] = (unsigned int)vm_atoi_16(valid_str(vm,
-		((arg[0] + arg[1]) * 2 + cr->position - 2) % 8192, 8));
-		cr->carry = cr->regist[arg[2] - 1] == 0 ? 1 : 0;
-		print_op(arg, cr, vm);
-	}
+	ft_printf("P%5d | lldi %d %d r%d\n", cr->index, ar[0], ar[1], ar[2]);
+	ft_printf("       | -> load from %d + %d = %d (with pc and mod %d)\n",
+	ar[0], ar[1], ar[0] + ar[1], (ar[0] + ar[1] + cr->position / 2) % 4096);
 }
 
 void				op_long_load_index(t_vm *vm, t_carriage *cr)
 {
-	int				*tp;
-	int				*arg;
-	char			*str;
+	int				*args_type;
+	int				*args_number;
+	int				new_position;
 
-	tp = check_arg(vm_atoi_16(valid_str(vm, cr->position, 2)));
-	if ((tp[0] == 1 || tp[0] == 2) && (tp[1] == 1 || tp[1] == 2) && tp[2] == 1)
+	new_position = 0;
+	args_type = check_arg(vm_atoi_16(valid_str(vm, cr->position, 2)));
+	args_number = save_arg(vm, cr, args_type, &new_position);
+	if (check(cr, &args_number, args_type))
 	{
-		str = valid_str(vm, (cr->position + 2) % 8192,
-						(tp[0] + tp[1] + tp[2]) * 2);
-		arg = cast_arg_norm(tp, str);
-		check(vm, cr, arg, tp);
+		cr->regist[args_number[2] - 1] = (unsigned int)vm_atoi_16(valid_str(vm,
+		((args_number[0] + args_number[1]) * 2 + cr->position - 2) % 8192, 8));
+		cr->carry = cr->regist[args_number[2] - 1] == 0 ? 1 : 0;
+		if ((vm->nbr_log & 4) == 4)
+			print_v4(cr, args_number);
 	}
-	else if (tp[0] == 4 && (tp[1] == 1 || tp[1] == 2) && tp[2] == 1)
-	{
-		str = valid_str(vm, (cr->position + 2) % 8192, (2 + tp[1] + tp[2]) * 2);
-		arg = cast_arg_ind(vm, tp, str, cr->position);
-		check(vm, cr, arg, tp);
-	}
-	push_position(tp, cr);
+	cr->position += new_position + 4;
 }
