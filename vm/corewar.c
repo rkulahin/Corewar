@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/03 18:59:07 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/04 16:08:31 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void			main_cycle(t_vm *vm)
 	while (check)
 	{
 		car = vm->carriage;
-		if (vm->cycle == 8910)
+		if (vm->cycle == 25368)
 			write(0, 0, 0);
 		if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
 			print_and_return();
