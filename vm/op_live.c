@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 18:21:23 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/03 18:59:16 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/05 16:21:22 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void			op_live(t_vm *vm, t_carriage *carriage)
 	name = valid_str(vm, carriage->position, 8);
 	carriage->live = vm->cycle;
 	players = vm->players;
+	if ((vm->nbr_log & 4) == 4)
+		ft_printf("P%5d | live %d\n", carriage->index, vm_atoi_16(name));
 	while (players)
 	{
 		if (players->index == (int)(0 - vm_atoi_16(name)))
@@ -55,7 +57,5 @@ void			op_live(t_vm *vm, t_carriage *carriage)
 		else
 			players = players->next;
 	}
-	if ((vm->nbr_log & 4) == 4)
-		ft_printf("P%5d | live %d\n", carriage->index, vm_atoi_16(name));
 	carriage->position = (carriage->position + 10) % 8192;
 }
