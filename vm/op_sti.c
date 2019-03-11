@@ -3,23 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   op_sti.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 15:53:02 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/09 14:52:49 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/03/11 17:36:08 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static int		find_ind(t_vm *vm, char *str)
+static int		find_ind(t_vm *vm, int nb)
 {
 	int		t_ind;
+	char	*s;
+
+	s = valid_str(vm, (nb % IDX_MOD) * 2, 8);
+	t_ind = vm_atoi_16(s);
+	free(s);
+	return (t_ind);
+}
+
+static int		arg_find(t_vm *vm, t_carriage *cr, int i, int *j)
+{
+	char	*s;
 	int		nb;
 
-	nb = (short)vm_atoi_16(str);
-	t_ind = vm_atoi_16(valid_str(vm, (nb % IDX_MOD) * 2, 8));
-	return (t_ind);
+	s = NULL;
+	s = valid_str(vm, cr->position + 2 + *j, i);
+	*j += i;
+	if (i == 2)
+		nb = (unsigned char)vm_atoi_16(s);
+	if (i == 4)
+		nb = (short)vm_atoi_16(s);
+	if (i == 8)
+		nb = (unsigned int)vm_atoi_16(s);
+	free(s);
+	return (nb);
 }
 
 static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
@@ -27,27 +46,15 @@ static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 	int		*t_args;
 	int		i;
 
-	t_args = (int *)malloc(sizeof(int) * 3);
 	i = -1;
+	t_args = (int *)malloc(sizeof(int) * 3);
 	while (++i < 3)
 		if (args[i] == T_IND)
-		{
-			t_args[i] = find_ind(vm, valid_str(vm, cr->position +
-			2 + *j, 4));
-			*j += 4;
-		}
+			t_args[i] = find_ind(vm, arg_find(vm, cr, 4, j));
 		else if (args[i] == T_REG)
-		{
-			t_args[i] = (unsigned char)vm_atoi_16(valid_str(vm, cr->position +
-			2 + *j, 2));
-			*j += 2;
-		}
+			t_args[i] = arg_find(vm, cr, 2, j);
 		else if (args[i] == T_DIR)
-		{
-			t_args[i] = (short)vm_atoi_16(valid_str(vm, cr->position +
-			2 + *j, 4));
-			*j += 4;
-		}
+			t_args[i] = arg_find(vm, cr, 4, j);
 	return (t_args);
 }
 
@@ -72,23 +79,16 @@ static int		check(t_carriage *cr, int **args_number, int *args_type)
 	return (j);
 }
 
-static void		print_sti(int *t_args, t_carriage *cr)
-{
-	ft_printf("P %4i | sti r%i %i %i\n", cr->index,
-	t_args[0], t_args[1], t_args[2]);
-	ft_printf("       | -> store to %i + %i = %i (with pc and mod %i)\n",
-	t_args[1], t_args[2], t_args[1] + t_args[2],
-	(cr->position / 2) + ((t_args[1] + t_args[2]) % IDX_MOD));
-}
-
 void			op_sti(t_vm *vm, t_carriage *cr)
 {
 	int		*args_type;
 	int		*args_number;
 	int		new_position;
+	char	*s;
 
 	new_position = 0;
-	args_type = check_arg(vm_atoi_16(valid_str(vm, cr->position, 2)));
+	s = valid_str(vm, cr->position, 2);
+	args_type = check_arg(vm_atoi_16(s));
 	args_number = save_arg(vm, cr, args_type, &new_position);
 	if (check(cr, &args_number, args_type))
 	{
@@ -97,5 +97,8 @@ void			op_sti(t_vm *vm, t_carriage *cr)
 		if ((vm->nbr_log & 4) == 4)
 			print_sti(args_number, cr);
 	}
+	free(args_type);
+	free(args_number);
+	free(s);
 	cr->position += new_position + 4;
 }

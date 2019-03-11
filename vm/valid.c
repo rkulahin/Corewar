@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 15:26:56 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/18 15:05:08 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/11 16:40:17 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,11 @@ int		valid_champ(t_vm *all, char **av, int i)
 	t_players	*new;
 	int			fd;
 
-	if (ft_strstr(av[i], ".cor") == NULL)
-		error("BAD_NAME");
 	new = init_player();
 	fd = open(av[i], O_RDWR);
 	if (fd <= 1)
 		error("BAD_PLAYER");
-	new->champ = parce_champ(fd);
+	new->champ = parce_champ(fd, 0, NULL, NULL);
 	add_champ(&all, new);
 	return (i + 1);
 }

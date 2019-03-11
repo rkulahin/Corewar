@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/02 11:35:56 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/11 18:26:30 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void			vm_map(t_vm *vm, t_players *plr, int i, int k)
 	unsigned int	j;
 	int				byt;
 	char			*str;
+	t_carriage		*new;
 
 	byt = MEM_SIZE * 2 / vm->nbr_plrs;
 	while (plr)
@@ -91,7 +92,8 @@ void			vm_map(t_vm *vm, t_players *plr, int i, int k)
 			free(str);
 			j++;
 		}
-		add_carriage(vm, init_carriage(vm, plr->index, (plr->index - 1) * byt));
+		new = init_carriage(vm, plr->index, (plr->index - 1) * byt);
+		add_carriage(vm, new);
 		plr = plr->next;
 	}
 }

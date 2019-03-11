@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:32:24 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/11 10:09:07 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/11 16:44:14 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void		add_champ(t_vm **all, t_players *new)
 	int			i;
 
 	i = 0;
+	new->next = NULL;
 	tmp = (*all)->players;
 	if (!(*all)->players)
 	{
@@ -77,41 +78,19 @@ void		add_champ(t_vm **all, t_players *new)
 		error("TOO_MUCH_PLAYERS");
 }
 
-t_vm		*parce_argv(int ac, char **av)
+static void	ch_magic(char *s, char *s1)
 {
-	int		i;
-	int		index_champ;
-	t_vm	*all;
-
-	i = 1;
-	index_champ = 1;
-	all = init_vm();
-	while (i < ac)
-	{
-		if (ft_strequ("-dump", av[i]))
-			i = valid_dump(all, ac, av, i);
-		else if (ft_strequ("-n", av[i]))
-			i = valid_num(all, ac, av, i);
-		else if (ft_strstr(av[i], ".cor") != NULL)
-			i = valid_champ(all, av, i);
-		else if (ft_strequ("-v", av[i]))
-			i = valid_log(all, ac, av, i);
-		else if (ft_strequ("-a", av[i]))
-			i = valid_aff(all, i);
-		else
-			error("BAD_ARGUMENT");
-	}
-	parce_champ_index(all);
-	put_champ_index(all);
-	return (all);
+	if (ft_strcmp(s, s1))
+		error("BAD_MAGIC");
+	free(s);
+	free(s1);
 }
 
-header_t	*parce_champ(int fd)
+header_t	*parce_champ(int fd, unsigned int i, char *s, char *s1)
 {
 	header_t		*champ;
 	unsigned int	read_n;
 	unsigned int	head_len;
-	unsigned int	i;
 
 	i = 0;
 	champ = (header_t *)malloc(sizeof(header_t));
@@ -120,9 +99,9 @@ header_t	*parce_champ(int fd)
 	if (read_n != head_len)
 		error("BAD_HEADER");
 	champ->magic = reverse(champ->magic);
-	if (ft_strcmp(ft_itoa_base_x(COREWAR_EXEC_MAGIC, 16),
-		ft_itoa_base_x(champ->magic, 16)))
-		error("BAD_MAGIC");
+	s = ft_itoa_base_x(COREWAR_EXEC_MAGIC, 16);
+	s1 = ft_itoa_base_x(champ->magic, 16);
+	ch_magic(s, s1);
 	champ->prog_size = reverse(champ->prog_size);
 	read_n = read(fd, champ->prog, CHAMP_MAX_SIZE + 1);
 	if (read_n != champ->prog_size || champ->prog_size > CHAMP_MAX_SIZE)
@@ -132,6 +111,6 @@ header_t	*parce_champ(int fd)
 		champ->prog[i] = reverse(champ->prog[i]);
 		i++;
 	}
-		champ->prog[i] = reverse(champ->prog[i]);
+	champ->prog[i] = reverse(champ->prog[i]);
 	return (champ);
 }

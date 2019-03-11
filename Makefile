@@ -6,7 +6,7 @@
 #    By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/26 13:22:53 by rkulahin          #+#    #+#              #
-#    Updated: 2019/03/03 16:47:22 by rkulahin         ###   ########.fr        #
+#    Updated: 2019/03/11 17:24:56 by rkulahin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,9 @@ SRC = main.c \
 		op_long_load_index.c \
 		op_long_load.c \
 		op_zjmp.c \
-		op_aff.c  
+		op_aff.c  \
+		parce_plus.c \
+		print_log4.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 INCL = -I includes/
 FLAGS =	-g -Wall -Wextra -Werror

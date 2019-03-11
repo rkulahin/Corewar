@@ -3,41 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   op_st.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 14:36:08 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/09 14:54:02 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/03/11 18:13:50 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+static int		arg_find(t_vm *vm, t_carriage *cr, int i, int *j)
+{
+	char	*s;
+	int		nb;
+
+	s = NULL;
+	s = valid_str(vm, cr->position + 2 + *j, i);
+	*j += i;
+	if (i == 2)
+		nb = (unsigned char)vm_atoi_16(s);
+	if (i == 4)
+		nb = (short)vm_atoi_16(s);
+	if (i == 8)
+		nb = (unsigned int)vm_atoi_16(s);
+	free(s);
+	return (nb);
+}
 
 static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 {
 	int		*t_args;
 	int		i;
 
-	t_args = (int *)malloc(sizeof(int) * 3);
 	i = -1;
+	t_args = (int *)malloc(sizeof(int) * 3);
 	while (++i < 2)
-		if (args[i] == T_IND)
-		{
-			t_args[i] = (short)vm_atoi_16(valid_str(vm, cr->position +
-			2 + *j, 4));
-			*j += 4;
-		}
-		else if (args[i] == T_REG)
-		{
-			t_args[i] = (unsigned char)vm_atoi_16(valid_str(vm, cr->position +
-			2 + *j, 2));
-			*j += 2;
-		}
+		if (args[i] == T_REG)
+			t_args[i] = arg_find(vm, cr, 2, j);
 		else if (args[i] == T_DIR)
-		{
-			t_args[i] = (unsigned int)vm_atoi_16(valid_str(vm, cr->position +
-			2 + *j, 8));
-			*j += 8;
-		}
+			t_args[i] = arg_find(vm, cr, 8, j);
 	return (t_args);
 }
 
@@ -59,25 +63,31 @@ static int		check(t_carriage *cr, int **args_number, int *args_type)
 	return (j);
 }
 
-
-
 void			op_st(t_vm *vm, t_carriage *cr)
 {
 	int		*args_type;
-	int		*args_number;
+	int		*arg_n;
 	int		new_position;
+	char	*s;
 
 	new_position = 0;
-	args_type = check_arg(vm_atoi_16(valid_str(vm, cr->position, 2)));
-	args_number = save_arg(vm, cr, args_type, &new_position);
-	if (check(cr, &args_number, args_type))
+	s = valid_str(vm, cr->position, 2);
+	args_type = check_arg(vm_atoi_16(s));
+	free(s);
+	arg_n = save_arg(vm, cr, args_type, &new_position);
+	if (check(cr, &arg_n, args_type))
 	{
 		if (args_type[1] == T_IND)
-			replace_map(vm, (cr->position + (args_number[1] % IDX_MOD) * 2) %
-			8192, vm_itoa_16(cr->regist[args_number[0] - 1]), 8);
+		{
+			s = vm_itoa_16(cr->regist[arg_n[0] - 1]);
+			replace_map(vm, (cr->position + (arg_n[1] % IDX_MOD) * 2) %
+			8192, s, 8);
+			free(s);
+		}
 		if ((vm->nbr_log & 4) == 4)
-			ft_printf("P %4i | st r%i %i\n", cr->index, args_number[0],
-			args_number[1]);
+			ft_printf("P %4i | st r%i %i\n", cr->index, arg_n[0], arg_n[1]);
 	}
+	free(args_type);
+	free(arg_n);
 	cr->position += new_position + 4;
 }

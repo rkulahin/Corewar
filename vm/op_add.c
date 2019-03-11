@@ -6,38 +6,44 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 15:30:47 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/03 16:55:46 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/11 17:38:02 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+static int		arg_find(t_vm *vm, t_carriage *cr, int i, int *j)
+{
+	char	*s;
+	int		nb;
+
+	s = NULL;
+	s = valid_str(vm, cr->position + 2 + *j, i);
+	*j += i;
+	if (i == 2)
+		nb = (unsigned char)vm_atoi_16(s);
+	if (i == 4)
+		nb = (short)vm_atoi_16(s);
+	if (i == 8)
+		nb = (unsigned int)vm_atoi_16(s);
+	free(s);
+	return (nb);
+}
 
 static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 {
 	int		*t_args;
 	int		i;
 
-	t_args = (int *)malloc(sizeof(int) * 3);
 	i = -1;
+	t_args = (int *)malloc(sizeof(int) * 3);
 	while (++i < 3)
 		if (args[i] == T_IND)
-		{
-			t_args[i] = (short)vm_atoi_16(valid_str(vm, cr->position +
-			2 + *j, 4));
-			*j += 4;
-		}
+			t_args[i] = arg_find(vm, cr, 4, j);
 		else if (args[i] == T_REG)
-		{
-			t_args[i] = (unsigned char)vm_atoi_16(valid_str(vm, cr->position +
-			2 + *j, 2));
-			*j += 2;
-		}
+			t_args[i] = arg_find(vm, cr, 2, j);
 		else if (args[i] == T_DIR)
-		{
-			t_args[i] = (unsigned int)vm_atoi_16(valid_str(vm, cr->position +
-			2 + *j, 8));
-			*j += 8;
-		}
+			t_args[i] = arg_find(vm, cr, 8, j);
 	return (t_args);
 }
 
@@ -66,9 +72,11 @@ void			op_add(t_vm *vm, t_carriage *cr)
 	int				*args_type;
 	int				*args_number;
 	int				new_position;
+	char			*s;
 
 	new_position = 0;
-	args_type = check_arg(vm_atoi_16(valid_str(vm, cr->position, 2)));
+	s = valid_str(vm, cr->position, 2);
+	args_type = check_arg(vm_atoi_16(s));
 	args_number = save_arg(vm, cr, args_type, &new_position);
 	if (check(&args_number, args_type))
 	{
@@ -79,5 +87,8 @@ void			op_add(t_vm *vm, t_carriage *cr)
 			ft_printf("P %4d | add r%d r%d r%d\n", cr->index,
 			args_number[0], args_number[1], args_number[2]);
 	}
+	free(args_type);
+	free(args_number);
+	free(s);
 	cr->position += new_position + 4;
 }

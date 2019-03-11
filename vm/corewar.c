@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/11 10:18:21 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/11 14:59:28 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,24 +198,3 @@ void			main_cycle(t_vm *vm)
 		vm->cycle++;
 	}
 }
-				// 	ft_printf("Cycle %i\nMAP :\n", vm->cycle);
-				// 	i = -1;
-				// 	while (++i < MEM_SIZE * 2)
-				// 	{
-				// 		if (i % 128 == 0)
-				// 			ft_printf("\n");
-				// 		if (i == car->position)
-				// 			ft_printf(GRE"L"EOC);
-				// 		if (i == 0 || i == 1)
-				// 			ft_printf(RED"%c"EOC, vm->map[i]);
-				// 		else if (i == (MEM_SIZE * 2) / vm->nbr_plrs || i == (MEM_SIZE * 2) / vm->nbr_plrs + 1)
-				// 			ft_printf(YEL"%c"EOC, vm->map[i]);
-				// 		else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 2 + 1)
-				// 			ft_printf(BLU"%c"EOC, vm->map[i]);
-				// 		else if (i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 || i == ((MEM_SIZE * 2) / vm->nbr_plrs) * 3 + 1)
-				// 			ft_printf(GRE"%c"EOC, vm->map[i]);
-				// 		else
-				// 			ft_printf("%c", vm->map[i]);
-				// 	}
-				// 	ft_printf("\nsize = %d\n", i);
-				// 	}

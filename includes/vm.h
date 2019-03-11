@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/11 10:23:10 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/11 18:17:57 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ struct						s_vm
 
 	int						nbr_log;				// бонус вывод
 	int						aff;
+	int						curses;
 	int						nbr_car;				// кол-во кареток
 	unsigned char			map[MEM_SIZE * 2];
 
@@ -100,8 +101,8 @@ unsigned int				reverse(unsigned int b);
 /*
 ** parce.c
 */
-t_vm						*parce_argv(int ac, char **av);
-header_t					*parce_champ(int fd);
+t_vm						*parce_argv(int ac, char **av, int i);
+header_t					*parce_champ(int fd, unsigned int i, char *s, char *s1);
 void						add_champ(t_vm **all, t_players *new);
 void						parce_champ_index(t_vm *all);
 void						put_champ_index(t_vm *all);
@@ -132,13 +133,12 @@ int							check_new_command(t_vm *vm, t_carriage *cr);
 /*
 ** func.c
 */
-int							vm_atoi_16(char *str);
+int							vm_atoi_16(char *a1);
 char						*vm_itoa_16(long long numb);
 int							*check_arg(int nb);
 /*
 ** other.c
 */
-void						run_to_command(t_vm *vm,t_carriage *cr, int j);
 void						print_and_return(void);						// Написать
 void						win_player(t_players *last);
 void						replace_map(t_vm *vm, int position, char *ptr, int nb);
@@ -183,7 +183,6 @@ void						op_sub(t_vm *vm, t_carriage *car);
 ** op_aff.c
 */
 void						op_aff(t_vm *vm, t_carriage *cr);
-char						*space_byte_print(char *ptr);
 
 /*
 ** op_load_index.c
@@ -214,7 +213,12 @@ void						op_long_load(t_vm *vm, t_carriage *car);
 */
 int							valid_log(t_vm *all, int ac, char **av, int i);
 int							valid_aff(t_vm *all, int i);
-
+int							valid_curses(t_vm *all, int i);
+void						print_usage(void);
+void						null_flags(t_vm *vm);
+void						print_sti(int *t_args, t_carriage *cr);
+void						print_v4(t_carriage *cr, int *ar);
+void						print_lldi(t_carriage *cr, int *ar);
 typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
 //T_IND сколько пропускать
 extern	t_func					g_func[17];

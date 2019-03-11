@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_live.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 18:21:23 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/10 13:04:27 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/03/11 17:55:00 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ void			op_live(t_vm *vm, t_carriage *carriage)
 		else
 			players = players->next;
 	}
+	free(name);
 	carriage->position = carriage->position + 10;
 }

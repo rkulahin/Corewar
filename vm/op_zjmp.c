@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_zjmp.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 10:50:31 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/09 13:10:47 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/03/11 18:17:28 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void	op_zjmp(t_vm *vm, t_carriage *cr)
 {
 	int		zjmp;
+	char	*s;
 
-	zjmp = (short)vm_atoi_16(valid_str(vm, cr->position, 4));
+	s = valid_str(vm, cr->position, 4);
+	zjmp = (short)vm_atoi_16(s);
 	if (cr->carry == 1)
 	{
 		cr->position += ((zjmp % IDX_MOD) * 2) % 8192;
@@ -32,4 +34,5 @@ void	op_zjmp(t_vm *vm, t_carriage *cr)
 		else
 			ft_printf("P %4i | zjmp %i FAILED\n", cr->index, zjmp);
 	}
+	free(s);
 }
