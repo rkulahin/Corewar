@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:32:24 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/01 13:59:32 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/11 10:09:07 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,6 @@ t_vm		*parce_argv(int ac, char **av)
 	i = 1;
 	index_champ = 1;
 	all = init_vm();
-	// if (ac > 15)
-	// 	error("BAD_INPUT");
 	while (i < ac)
 	{
 		if (ft_strequ("-dump", av[i]))
@@ -98,6 +96,8 @@ t_vm		*parce_argv(int ac, char **av)
 			i = valid_champ(all, av, i);
 		else if (ft_strequ("-v", av[i]))
 			i = valid_log(all, ac, av, i);
+		else if (ft_strequ("-a", av[i]))
+			i = valid_aff(all, i);
 		else
 			error("BAD_ARGUMENT");
 	}

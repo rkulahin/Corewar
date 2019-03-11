@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_long_load_index.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 17:49:54 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/03 17:06:28 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/10 11:56:49 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int		find_ind(t_vm *vm, char *str, int position)
 	int		nb;
 
 	nb = (short)vm_atoi_16(str);
-	t_ind = vm_atoi_16(valid_str(vm, (nb % IDX_MOD) * 2 + position - 2, 8));
+	t_ind = (unsigned int)vm_atoi_16(valid_str(vm,
+	((nb % IDX_MOD) * 2 + position - 2) % 8192, 8));
 	return (t_ind);
 }
 
@@ -44,9 +45,9 @@ static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 		}
 		else if (args[i] == T_DIR)
 		{
-			t_args[i] = (unsigned int)vm_atoi_16(valid_str(vm, cr->position +
-			2 + *j, 8));
-			*j += 8;
+			t_args[i] = (short)vm_atoi_16(valid_str(vm, cr->position +
+			2 + *j, 4));
+			*j += 4;
 		}
 	return (t_args);
 }
@@ -58,8 +59,8 @@ static int		check(t_carriage *cr, int **args_number, int *args_type)
 
 	i = -1;
 	j = 1;
-	if (args_type[1] == T_IND || args_type[2] != T_REG ||
-		(args_number[0][2] <= 0 && args_number[0][2] > 16))
+	if (args_type[1] == T_IND || args_type[2] != T_REG || args_type[0] == 0 ||
+		args_type[1] == 0 || (args_number[0][2] <= 0 || args_number[0][2] > 16))
 		j = 0;
 	while (++i < 2)
 	{
@@ -69,13 +70,16 @@ static int		check(t_carriage *cr, int **args_number, int *args_type)
 		else if (args_type[i] == T_REG)
 			j = 0;
 	}
+	if (args_type[2] == T_REG && (args_number[0][2] < 1 ||
+	args_number[0][2] > 16))
+		j = 0;
 	return (j);
 }
 
 static void			print_v4(t_carriage *cr, int *ar)
 {
-	ft_printf("P%5d | lldi %d %d r%d\n", cr->index, ar[0], ar[1], ar[2]);
-	ft_printf("       | -> load from %d + %d = %d (with pc and mod %d)\n",
+	ft_printf("P %4d | lldi %d %d r%d\n", cr->index, ar[0], ar[1], ar[2]);
+	ft_printf("       | -> load from %d + %d = %d (with pc %d)\n",
 	ar[0], ar[1], ar[0] + ar[1], (ar[0] + ar[1] + cr->position / 2) % 4096);
 }
 

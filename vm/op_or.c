@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_or.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 13:37:49 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/03 17:07:24 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/09 15:13:01 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int			find_ind(t_vm *vm, int pc, char *str)
 	int		nb;
 
 	nb = (short)vm_atoi_16(str);
-	t_ind = (unsigned int)vm_atoi_16(valid_str(vm, pc - 2 + nb, 8));
+	t_ind = (unsigned int)vm_atoi_16(valid_str(vm, (pc - 2 + nb) % 8192, 8));
 	return (t_ind);
 }
 
@@ -59,7 +59,7 @@ static int			check(t_carriage *cr, int **args_number, int *args_type)
 	i = -1;
 	j = 1;
 	if (args_type[2] != T_REG || args_number[0][0] <= 0 ||
-	args_number[0][0] >= 17)
+	args_type[0] == 0 || args_type[1] == 0 || args_number[0][0] >= 17)
 		j = 0;
 	while (++i < 2)
 	{
@@ -69,6 +69,9 @@ static int			check(t_carriage *cr, int **args_number, int *args_type)
 		else if (args_type[i] == T_REG)
 			j = 0;
 	}
+	if (args_type[2] == T_REG && (args_number[0][2] < 1 ||
+	args_number[0][2] > 16))
+		j = 0;
 	return (j);
 }
 
@@ -86,7 +89,7 @@ void				op_or(t_vm *vm, t_carriage *cr)
 		cr->regist[args_number[2] - 1] = args_number[0] | args_number[1];
 		cr->carry = (cr->regist[args_number[2] - 1] == 0 ? 1 : 0);
 		if ((vm->nbr_log & 4) == 4)
-			ft_printf("P%5i | or %i %i r%i\n",
+			ft_printf("P %4i | or %i %i r%i\n",
 			cr->index, args_number[0], args_number[1], args_number[2]);
 	}
 	cr->position += new_position + 4;

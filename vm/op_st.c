@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_st.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 14:36:08 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/05 16:43:43 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/09 14:54:02 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,19 @@ static int		check(t_carriage *cr, int **args_number, int *args_type)
 
 	j = 1;
 	if (args_type[0] != T_REG || args_type[1] == T_DIR ||
-	args_number[0][0] <= 0 || args_number[0][0] >= 17)
+	args_number[0][0] <= 0 || args_number[0][0] >= 17 || args_type[1] == 0)
 		j = 0;
-	if ((args_type[1] == T_REG) && (args_number[0][1] <= 0 ||
+	else if ((args_type[1] == T_REG) && (args_number[0][1] <= 0 ||
 	args_number[0][1] >= 17))
 		j = 0;
-	if (args_type[1] == T_REG && args_number[0][1] > 0 &&
+	else if (args_type[1] == T_REG && args_number[0][1] > 0 &&
 	args_number[0][1] < 17)
 		cr->regist[args_number[0][1] - 1] =
 		cr->regist[args_number[0][0] - 1];
 	return (j);
 }
+
+
 
 void			op_st(t_vm *vm, t_carriage *cr)
 {
@@ -74,7 +76,7 @@ void			op_st(t_vm *vm, t_carriage *cr)
 			replace_map(vm, (cr->position + (args_number[1] % IDX_MOD) * 2) %
 			8192, vm_itoa_16(cr->regist[args_number[0] - 1]), 8);
 		if ((vm->nbr_log & 4) == 4)
-			ft_printf("P%5i | st r%i %i\n", cr->index, args_number[0],
+			ft_printf("P %4i | st r%i %i\n", cr->index, args_number[0],
 			args_number[1]);
 	}
 	cr->position += new_position + 4;

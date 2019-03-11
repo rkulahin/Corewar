@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_load.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 13:11:41 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/03 17:06:17 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/09 14:39:58 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int		find_ind(t_vm *vm, char *str, int position)
 	int		nb;
 
 	nb = (short)vm_atoi_16(str);
-	t_ind = vm_atoi_16(valid_str(vm, (nb % IDX_MOD) * 2 + position - 2, 8));
+	t_ind = (unsigned int)vm_atoi_16(valid_str(vm,
+	((nb % IDX_MOD) * 2 + position - 2) % 8192, 8));
 	return (t_ind);
 }
 
@@ -58,8 +59,8 @@ static int		check(int **args_number, int *args_type)
 
 	i = -1;
 	j = 1;
-	if (args_type[0] == T_REG || args_type[1] != T_REG ||
-		(args_number[0][1] <= 0 && args_number[0][1] > 16))
+	if (args_type[0] == T_REG || args_type[1] != T_REG || args_type[0] == 0 ||
+		(args_number[0][1] <= 0 || args_number[0][1] > 16))
 		j = 0;
 	return (j);
 }
@@ -78,7 +79,7 @@ void			op_load(t_vm *vm, t_carriage *cr)
 		cr->regist[args_number[1] - 1] = args_number[0];
 		cr->carry = cr->regist[args_number[1] - 1] == 0 ? 1 : 0;
 		if ((vm->nbr_log & 4) == 4)
-			ft_printf("P%5d | ld %d r%d\n", cr->index,
+			ft_printf("P %4d | ld %d r%d\n", cr->index,
 			cr->regist[args_number[1] - 1], args_number[1]);
 	}
 	cr->position += new_position + 4;

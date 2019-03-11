@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_long_load.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 17:43:31 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/03 15:29:29 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/09 14:45:03 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int		find_ind(t_vm *vm, char *str, int position)
 	int		nb;
 
 	nb = (short)vm_atoi_16(str);
-	t_ind = (short)vm_atoi_16(valid_str(vm, nb * 2 + position - 2, 4));
+	t_ind = (short)vm_atoi_16(valid_str(vm,
+	(nb * 2 + position - 2) % 8192, 4));
 	return (t_ind);
 }
 
@@ -32,7 +33,7 @@ static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 	while (++i < 2)
 		if (args[i] == T_IND)
 		{
-			t_args[i] = (unsigned int)find_ind(vm, valid_str(vm, cr->position +
+			t_args[i] = find_ind(vm, valid_str(vm, cr->position +
 			2 + *j, 4), cr->position);
 			*j += 4;
 		}
@@ -58,8 +59,8 @@ static int		check(int **args_number, int *args_type)
 
 	i = -1;
 	j = 1;
-	if (args_type[0] == T_REG || args_type[1] != T_REG ||
-		(args_number[0][1] <= 0 && args_number[0][1] > 16))
+	if (args_type[0] == T_REG || args_type[1] != T_REG || args_type[0] == 0 ||
+		(args_number[0][1] <= 0 || args_number[0][1] > 16))
 		j = 0;
 	return (j);
 }
@@ -78,7 +79,7 @@ void			op_long_load(t_vm *vm, t_carriage *cr)
 		cr->regist[args_number[1] - 1] = args_number[0];
 		cr->carry = cr->regist[args_number[1] - 1] == 0 ? 1 : 0;
 		if ((vm->nbr_log & 4) == 4)
-			ft_printf("P%5d | lld %d r%d\n", cr->index,
+			ft_printf("P %4d | lld %d r%d\n", cr->index,
 			cr->regist[args_number[1] - 1], args_number[1]);
 	}
 	cr->position += new_position + 4;

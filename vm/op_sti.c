@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_sti.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 15:53:02 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/03 13:57:04 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/09 14:52:49 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ static int		check(t_carriage *cr, int **args_number, int *args_type)
 
 	i = 0;
 	j = 1;
-	if (args_type[2] == T_IND || args_type[0] != T_REG ||
-	args_number[0][0] <= 0 || args_number[0][0] >= 17)
+	if (args_type[2] == T_IND || args_type[0] != T_REG || args_type[2] == 0 ||
+	args_type[1] == 0 || args_number[0][0] <= 0 || args_number[0][0] >= 17)
 		j = 0;
 	while (++i < 3)
 	{
@@ -74,7 +74,7 @@ static int		check(t_carriage *cr, int **args_number, int *args_type)
 
 static void		print_sti(int *t_args, t_carriage *cr)
 {
-	ft_printf("P%5i | sti r%i %i %i\n", cr->index,
+	ft_printf("P %4i | sti r%i %i %i\n", cr->index,
 	t_args[0], t_args[1], t_args[2]);
 	ft_printf("       | -> store to %i + %i = %i (with pc and mod %i)\n",
 	t_args[1], t_args[2], t_args[1] + t_args[2],

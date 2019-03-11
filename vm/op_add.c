@@ -76,7 +76,7 @@ void			op_add(t_vm *vm, t_carriage *cr)
 		cr->regist[args_number[1] - 1];
 		cr->carry = cr->regist[args_number[2] - 1] == 0 ? 1 : 0;
 		if ((vm->nbr_log & 4) == 4)
-			ft_printf("P%5d | add r%d r%d r%d\n", cr->index,
+			ft_printf("P %4d | add r%d r%d r%d\n", cr->index,
 			args_number[0], args_number[1], args_number[2]);
 	}
 	cr->position += new_position + 4;

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/03 14:14:57 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/11 10:23:10 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ struct						s_vm
 	int						die;					// циклы смерти
 
 	int						nbr_log;				// бонус вывод
+	int						aff;
 	int						nbr_car;				// кол-во кареток
 	unsigned char			map[MEM_SIZE * 2];
 
@@ -125,8 +126,9 @@ t_carriage					*init_carriage(t_vm *vm, int index, int position);
 void						kill_carriage(t_vm *vm, t_carriage *cr);
 void						main_check(t_vm *vm, t_carriage *tmp);
 void						check_player(t_vm *vm);
-void						check_command(t_vm *vm, t_carriage *cr, int j);
+void						check_command(t_vm *vm, t_carriage *cr);
 void						main_cycle(t_vm *vm);
+int							check_new_command(t_vm *vm, t_carriage *cr);
 /*
 ** func.c
 */
@@ -211,6 +213,7 @@ void						op_long_load(t_vm *vm, t_carriage *car);
 ** bonus_parce.c
 */
 int							valid_log(t_vm *all, int ac, char **av, int i);
+int							valid_aff(t_vm *all, int i);
 
 typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
 //T_IND сколько пропускать

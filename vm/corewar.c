@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/05 15:24:40 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/11 10:18:21 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,32 +93,47 @@ void			check_player(t_vm *vm)
 		win_player(last);
 }
 
-void			check_command(t_vm *vm, t_carriage *cr, int j)
+void			print_adv16(t_vm *vm, t_carriage *cr, int old_pos, int i)
+{
+	int		move;
+	int		k;
+
+	if (((vm->nbr_log & 16) == 16 && i != 9) ||
+		((vm->nbr_log & 16) == 16 && cr->carry == 0 && i == 9))
+	{
+		if (cr->position < old_pos)
+			move = ABS(((8192 - old_pos) + cr->position) / 2);
+		else
+			move = ABS((cr->position - old_pos) / 2);
+		ft_printf("ADV %d (%#.4x -> %#.4x) ",
+		move, (old_pos + 1) / 2, (cr->position + 1) / 2);
+		k = -1;
+		while (++k < move)
+		{
+			ft_printf("%c%c ", vm->map[old_pos % 8192],
+			vm->map[(old_pos + 1) % 8192]);
+			old_pos = (old_pos + 2) % 8192;
+		}
+		ft_printf("\n");
+	}
+}
+
+void			check_command(t_vm *vm, t_carriage *cr)
 {
 	int		i;
 	int		old_pos;
 
+	cr->position = cr->position % 8192;
 	i = vm_atoi_16(cr->operation);
 	if (i > 0 && i <= 16)
 	{
-		j = 1;
 		old_pos = cr->position;
 		g_func[i - 1](vm, cr);
-		if (((vm->nbr_log & 16) == 16 && i != 9) ||
-		((vm->nbr_log & 16) == 16 && cr->carry == 0 && i == 9))
-		{
-			ft_printf("ADV %d (%#.4x -> %#.4x) ",
-			ABS((old_pos - cr->position) / 2), old_pos / 2, cr->position / 2);
-			while (old_pos != cr->position)
-			{
-				ft_printf("%c%c ", vm->map[old_pos % 8192],
-				vm->map[(old_pos + 1) % 8192]);
-				old_pos = (old_pos + 2) % 8192;
-			}
-			ft_printf("\n");
-		}
+		print_adv16(vm, cr, old_pos, i);
 	}
-	// run_to_command(vm, cr, j);
+	else
+		cr->position = (cr->position + 2) % 8192;
+	cr->cycle = -1;
 }
 
 static	void	print_cycle(t_vm *vm)
@@ -131,48 +146,50 @@ static	void	print_cycle(t_vm *vm)
 		ft_printf("It is now cycle %i\n", vm->cycle + 1);
 }
 
-static void		check_new_command(t_vm *vm, t_carriage *cr)
+int				check_new_command(t_vm *vm, t_carriage *cr)
 {
 	int		i;
 
-	if (cr->cycle == -1)
-		cr->position = (cr->position + 2) % 8192;
+	cr->position = cr->position % 8192;
 	cr->operation[0] = vm->map[cr->position % 8192];
 	cr->operation[1] = vm->map[(cr->position + 1) % 8192];
 	i = (unsigned char)vm_atoi_16(cr->operation);
 	if (i >= 1 && i <= 16)
-		cr->cycle = g_optab[i - 1].num_cycle + vm->cycle;
+	{
+		cr->cycle = g_optab[i - 1].num_cycle + vm->cycle - 1;
+		return (1);
+	}
 	else
+	{
 		cr->cycle = -1;
+		return (0);
+	}
 }
 
 void			main_cycle(t_vm *vm)
 {
 	int				check;
 	t_carriage		*car;
-	// int				i;
 
 	check = 1;
 	while (check)
 	{
 		car = vm->carriage;
-		if (vm->cycle == 25345)
-			write(0, 0, 0);
 		if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
 			print_and_return();
 		if (!car)
 			print_and_return();
 		while (car)
 		{
-			if (car->cycle <= vm->cycle && car->cycle != -1)
-				check_command(vm, car, 0);
-			car = car->next;
-		}
-		car = vm->carriage;
-		while (car)
-		{
+			if (vm->cycle == 16343 && car->index == 5072)
+				write(0, 0, 0);
 			if (car->cycle <= vm->cycle)
-				check_new_command(vm, car);
+			{
+				if (car->cycle != -1)
+					check_command(vm, car);
+				else if (!check_new_command(vm, car))
+					car->position = (car->position + 2) % 8192;
+			}
 			car = car->next;
 		}
 		if (vm->cycle >= vm->cycle_to_die)
@@ -181,7 +198,6 @@ void			main_cycle(t_vm *vm)
 		vm->cycle++;
 	}
 }
-
 				// 	ft_printf("Cycle %i\nMAP :\n", vm->cycle);
 				// 	i = -1;
 				// 	while (++i < MEM_SIZE * 2)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_sub.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 19:20:29 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/03 17:09:08 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/09 13:29:39 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void			op_sub(t_vm *vm, t_carriage *cr)
 		cr->regist[args_number[1] - 1];
 		cr->carry = cr->regist[args_number[2] - 1] == 0 ? 1 : 0;
 		if ((vm->nbr_log & 4) == 4)
-			ft_printf("P%5d | add r%d r%d r%d\n", cr->index,
+			ft_printf("P %4d | sub r%d r%d r%d\n", cr->index,
 			args_number[0], args_number[1], args_number[2]);
 	}
 	cr->position += new_position + 4;
