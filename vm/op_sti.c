@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 15:53:02 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/11 17:36:08 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/12 10:21:06 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,16 +89,18 @@ void			op_sti(t_vm *vm, t_carriage *cr)
 	new_position = 0;
 	s = valid_str(vm, cr->position, 2);
 	args_type = check_arg(vm_atoi_16(s));
+	free(s);
 	args_number = save_arg(vm, cr, args_type, &new_position);
 	if (check(cr, &args_number, args_type))
 	{
+		s = vm_itoa_16(cr->regist[args_number[0] - 1]);
 		replace_map(vm, cr->position + ((args_number[1] + args_number[2])
-		% IDX_MOD) * 2, vm_itoa_16(cr->regist[args_number[0] - 1]), 8);
+		% IDX_MOD) * 2, s, 8);
 		if ((vm->nbr_log & 4) == 4)
 			print_sti(args_number, cr);
+		free(s);
 	}
 	free(args_type);
 	free(args_number);
-	free(s);
 	cr->position += new_position + 4;
 }

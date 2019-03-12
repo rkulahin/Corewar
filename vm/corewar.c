@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/11 14:59:28 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/12 14:48:30 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void			kill_carriage(t_vm *vm, t_carriage *cr)
 	if (tmp && tmp->index == cr->index)
 	{
 		vm->carriage = cr->next;
+		free(cr);
 		return ;
 	}
 	while (tmp)
@@ -32,10 +33,12 @@ void			kill_carriage(t_vm *vm, t_carriage *cr)
 		if (tmp->next && tmp->next->index == cr->index)
 		{
 			tmp->next = cr->next;
+			free(cr);
 			return ;
 		}
 		tmp = tmp->next;
 	}
+	free(cr);
 }
 
 static void		change_cycle(t_vm *vm)

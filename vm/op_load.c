@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 13:11:41 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/11 18:39:53 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/12 10:08:50 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 static int		find_ind(t_vm *vm, int position, int nb)
 {
 	int		t_ind;
+	char	*str;
 
-	t_ind = (unsigned int)vm_atoi_16(valid_str(vm,
-	((nb % IDX_MOD) * 2 + position - 2) % 8192, 8));
+	str = valid_str(vm, ((nb % IDX_MOD) * 2 + position - 2) % 8192, 8);
+	t_ind = (unsigned int)vm_atoi_16(str);
+	free(str);
 	return (t_ind);
 }
 
@@ -52,7 +54,7 @@ static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 		else if (args[i] == T_REG)
 			t_args[i] = arg_find(vm, cr, 2, j);
 		else if (args[i] == T_DIR)
-			t_args[i] = arg_find(vm, cr, 4, j);
+			t_args[i] = arg_find(vm, cr, 8, j);
 	return (t_args);
 }
 

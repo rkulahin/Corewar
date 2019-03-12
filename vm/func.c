@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 14:46:32 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/11 16:51:12 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:08:33 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,20 @@ int			vm_atoi_16(char *str)
 {
 	int		i;
 	int		m;
+	int		j;
 
 	m = 0;
 	i = 0;
-	while ((*str >= 9 && *str <= 13) || *str == ' ')
-		str++;
-	while ((*str >= '0' && *str <= '9') || (*str >= 'a' && *str <= 'f'))
+	j = 0;
+	while ((str[j] >= 9 && str[j] <= 13) || str[j] == ' ')
+		j++;
+	while ((str[j] >= '0' && str[j] <= '9') || (str[j] >= 'a' && str[j] <= 'f'))
 	{
-		if (*str >= '0' && *str <= '9')
-			i = i * 16 + *str - '0';
+		if (str[j] >= '0' && str[j] <= '9')
+			i = i * 16 + str[j] - '0';
 		else
-			i = i * 16 + *str - 'a' + 10;
-		str++;
+			i = i * 16 + str[j] - 'a' + 10;
+		j++;
 	}
 	if (m == 1)
 		i = -i;

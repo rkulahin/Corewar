@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 17:43:31 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/11 18:44:35 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/12 14:14:35 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 static int		find_ind(t_vm *vm, int position, int nb)
 {
 	int		t_ind;
+	char	*str;
 
-	t_ind = (short)vm_atoi_16(valid_str(vm,
-	(nb * 2 + position - 2) % 8192, 4));
+	str = valid_str(vm, (nb * 2 + position - 2) % 8192, 4);
+	t_ind = (short)vm_atoi_16(str);
+	free(str);
 	return (t_ind);
 }
 

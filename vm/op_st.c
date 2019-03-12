@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 14:36:08 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/11 18:13:50 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:17:41 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 	i = -1;
 	t_args = (int *)malloc(sizeof(int) * 3);
 	while (++i < 2)
-		if (args[i] == T_REG)
+		if (args[i] == T_IND)
+			t_args[i] = arg_find(vm, cr, 4, j);
+		else if (args[i] == T_REG)
 			t_args[i] = arg_find(vm, cr, 2, j);
 		else if (args[i] == T_DIR)
 			t_args[i] = arg_find(vm, cr, 8, j);
@@ -69,11 +71,15 @@ void			op_st(t_vm *vm, t_carriage *cr)
 	int		*arg_n;
 	int		new_position;
 	char	*s;
+	arg_n = NULL;
+	args_type = NULL;
+	s = NULL;
 
 	new_position = 0;
 	s = valid_str(vm, cr->position, 2);
 	args_type = check_arg(vm_atoi_16(s));
 	free(s);
+	s = NULL;
 	arg_n = save_arg(vm, cr, args_type, &new_position);
 	if (check(cr, &arg_n, args_type))
 	{
@@ -83,11 +89,14 @@ void			op_st(t_vm *vm, t_carriage *cr)
 			replace_map(vm, (cr->position + (arg_n[1] % IDX_MOD) * 2) %
 			8192, s, 8);
 			free(s);
+			s = NULL;
 		}
 		if ((vm->nbr_log & 4) == 4)
 			ft_printf("P %4i | st r%i %i\n", cr->index, arg_n[0], arg_n[1]);
 	}
 	free(args_type);
+	args_type = NULL;
 	free(arg_n);
+	arg_n = NULL;
 	cr->position += new_position + 4;
 }
