@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 15:53:02 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/12 10:21:06 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/14 15:23:45 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void			op_sti(t_vm *vm, t_carriage *cr)
 		s = vm_itoa_16(cr->regist[args_number[0] - 1]);
 		replace_map(vm, cr->position + ((args_number[1] + args_number[2])
 		% IDX_MOD) * 2, s, 8);
+		recolor_map(vm, cr->position + ((args_number[1] + args_number[2])
+		% IDX_MOD) * 2, 8, vm->color[cr->position]);
 		if ((vm->nbr_log & 4) == 4)
 			print_sti(args_number, cr);
 		free(s);

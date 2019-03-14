@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/14 14:15:27 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/14 16:13:57 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,12 @@ int				main(int ac, char **av)
 	if (all->curses == 1)
 		null_flags(all);
 	ft_memset(all->map, '0', MEM_SIZE * 2);
-	ft_memset(all->color, 0, MEM_SIZE * 2);
+	// ft_memset(all->color, 9, MEM_SIZE * 2);
 	vm_map(all, all->players, 0, 0);
 	privetstvie(all);
+	// int i = -1;
+	// while (++i < 8192)
+	// 	ft_printf("%i", all->color[i]);
 	main_cycle(all);
 	return (0);
 }

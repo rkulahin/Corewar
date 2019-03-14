@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/14 14:21:20 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/14 15:23:02 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,7 @@ void						print_v4(t_carriage *cr, int *ar);
 void						print_lldi(t_carriage *cr, int *ar);
 void						visual_map(t_vm *vm);
 void						init_curses(void);
+void						recolor_map(t_vm *vm, int position, int nb, int color);
 
 typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
 //T_IND сколько пропускать

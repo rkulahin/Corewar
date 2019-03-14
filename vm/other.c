@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/14 14:13:11 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/14 15:14:20 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void		replace_map(t_vm *vm, int position, char *ptr, int nb)
 	while (i < nb)
 	{
 		vm->map[(position + j) % 8192] = ptr[j];
+		if (vm->curses == 1)
+			vm->color[(position + j) % 8192] = ptr[j];
 		i++;
 		j++;
 	}

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/14 14:32:03 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/14 16:15:59 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void			check_player(t_vm *vm)
 			last = tmp;
 		tmp = tmp->next;
 	}
-	if (last->live < vm->cycle - vm->die)
+	if (last->live < vm->cycle - vm->die && vm->curses != 1)
 		win_player(last);
 }
 
@@ -172,12 +172,18 @@ int				check_new_command(t_vm *vm, t_carriage *cr)
 void			main_cycle(t_vm *vm)
 {
 	t_carriage		*car;
+	int				vis;
 
-	init_curses();
-	visual_map(vm);
-	endwin();
+	vis = 1;
+	if (vm->curses == 1)
+	{
+		init_curses();
+		visual_map(vm);
+	}
 	while (true)
 	{
+		if (vis == 1)
+		{	
 		car = vm->carriage;
 		if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
 			print_and_return();
@@ -197,6 +203,13 @@ void			main_cycle(t_vm *vm)
 		if (vm->cycle >= vm->cycle_to_die)
 			main_check(vm, NULL);
 		print_cycle(vm);
+		mvprintw(65, 8, "%i", vm->cycle + 1);
 		vm->cycle++;
+		}
+		if (vis == 1)
+			vis = 0;
+		if (getch() == KEY_UP)
+			vis = 1;
 	}
+	endwin();
 }
