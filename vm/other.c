@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/12 15:03:31 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/14 14:13:11 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void		win_player(t_players *last)
 {
 	ft_printf("Contestant %i, \"%s\", has won !\n",
 	last->index, last->champ->prog_name);
-	system("Leaks virtual_machine");
+	// system("Leaks virtual_machine");
 	exit(1);
 }
 
@@ -47,6 +47,8 @@ void		privetstvie(t_vm *vm)
 	t_players	*tmp;
 	int			i;
 
+	if (vm->curses == 1)
+		return ;
 	i = 0;
 	ft_printf("Introducing contestants...\n");
 	while (++i != 5)

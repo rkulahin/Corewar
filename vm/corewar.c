@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/12 14:48:30 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/14 14:32:03 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,11 +171,12 @@ int				check_new_command(t_vm *vm, t_carriage *cr)
 
 void			main_cycle(t_vm *vm)
 {
-	int				check;
 	t_carriage		*car;
 
-	check = 1;
-	while (check)
+	init_curses();
+	visual_map(vm);
+	endwin();
+	while (true)
 	{
 		car = vm->carriage;
 		if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
@@ -184,8 +185,6 @@ void			main_cycle(t_vm *vm)
 			print_and_return();
 		while (car)
 		{
-			if (vm->cycle == 16343 && car->index == 5072)
-				write(0, 0, 0);
 			if (car->cycle <= vm->cycle)
 			{
 				if (car->cycle != -1)

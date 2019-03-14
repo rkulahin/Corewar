@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/12 14:43:34 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/14 14:21:20 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libftprintf/includes/ft_printf.h"
 # include <fcntl.h>
 # include "op.h"
+# include "ncurses.h"
 
 /*
 ** color types
@@ -67,6 +68,7 @@ struct						s_vm
 	int						curses;
 	int						nbr_car;				// кол-во кареток
 	unsigned char			map[MEM_SIZE * 2];
+	unsigned char			color[MEM_SIZE * 2];
 
 	t_players				*players;				// игроки
 	
@@ -219,6 +221,9 @@ void						null_flags(t_vm *vm);
 void						print_sti(int *t_args, t_carriage *cr);
 void						print_v4(t_carriage *cr, int *ar);
 void						print_lldi(t_carriage *cr, int *ar);
+void						visual_map(t_vm *vm);
+void						init_curses(void);
+
 typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
 //T_IND сколько пропускать
 extern	t_func					g_func[17];

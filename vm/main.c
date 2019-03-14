@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/11 15:34:26 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/14 14:15:27 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,14 @@ int				main(int ac, char **av)
 	t_vm	*all;
 
 	all = parce_argv(ac, av, 1);
-	if (all->curses == 1)
-		null_flags(all);
 	if (all->nbr_plrs >= 5)
 		error("TOO_MANY_PLAYERS");
 	if (all->nbr_plrs <= 0)
 		print_usage();
+	if (all->curses == 1)
+		null_flags(all);
 	ft_memset(all->map, '0', MEM_SIZE * 2);
+	ft_memset(all->color, 0, MEM_SIZE * 2);
 	vm_map(all, all->players, 0, 0);
 	privetstvie(all);
 	main_cycle(all);

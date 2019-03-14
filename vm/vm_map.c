@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/11 18:26:30 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/14 14:08:39 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,13 @@ void			add_carriage(t_vm *vm, t_carriage *new)
 void			vm_map(t_vm *vm, t_players *plr, int i, int k)
 {
 	unsigned int	j;
+	int				p;
 	int				byt;
 	char			*str;
 	t_carriage		*new;
 
 	byt = MEM_SIZE * 2 / vm->nbr_plrs;
+	p = 1;
 	while (plr)
 	{
 		i = (plr->index - 1) * byt;
@@ -86,12 +88,14 @@ void			vm_map(t_vm *vm, t_players *plr, int i, int k)
 			str = vm_itoa_16(plr->champ->prog[j]);
 			while (str[++k])
 			{
+				vm->color[i] = p + 1;
 				vm->map[i] = str[k];
 				i++;
 			}
 			free(str);
 			j++;
 		}
+		p++;
 		new = init_carriage(vm, plr->index, (plr->index - 1) * byt);
 		add_carriage(vm, new);
 		plr = plr->next;

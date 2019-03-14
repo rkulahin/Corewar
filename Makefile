@@ -6,7 +6,7 @@
 #    By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/26 13:22:53 by rkulahin          #+#    #+#              #
-#    Updated: 2019/03/11 17:24:56 by rkulahin         ###   ########.fr        #
+#    Updated: 2019/03/14 14:11:35 by rkulahin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ SRC = main.c \
 		op_zjmp.c \
 		op_aff.c  \
 		parce_plus.c \
-		print_log4.c
+		print_log4.c \
+		curses.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 INCL = -I includes/
 FLAGS =	-g -Wall -Wextra -Werror
@@ -49,7 +50,7 @@ FLAGS =	-g -Wall -Wextra -Werror
 
 all: $(NAME)
 $(NAME):	$(OBJ) $(LIB)
-	gcc -o $(NAME) $(FLAGS) $(OBJ) $(LIB)
+	gcc -o $(NAME) $(FLAGS) -lncurses $(OBJ) $(LIB)
 
 $(OBJ):		| $(OBJ_DIR)
 
