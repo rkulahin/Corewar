@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 14:36:08 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/15 17:32:04 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/17 17:25:27 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,10 @@ static int		check(t_carriage *cr, int **args_number, int *args_type)
 	return (j);
 }
 
-void			op_st(t_vm *vm, t_carriage *cr)
+static void		helper(t_vm *vm, t_carriage *cr, int *args_type, int *arg_n)
 {
-	int		*args_type;
-	int		*arg_n;
-	int		new_position;
 	char	*s;
-	arg_n = NULL;
-	args_type = NULL;
-	s = NULL;
 
-	new_position = 0;
-	s = valid_str(vm, cr->position, 2);
-	args_type = check_arg(vm_atoi_16(s));
-	free(s);
-	s = NULL;
-	arg_n = save_arg(vm, cr, args_type, &new_position);
 	if (check(cr, &arg_n, args_type))
 	{
 		if (args_type[1] == T_IND)
@@ -91,14 +79,26 @@ void			op_st(t_vm *vm, t_carriage *cr)
 			free(s);
 			recolor_map(vm, (cr->position + (arg_n[1] % IDX_MOD) * 2) %
 			8192, 8, cr->nbr_plr + 1);
-			s = NULL;
 		}
 		if ((vm->nbr_log & 4) == 4)
 			ft_printf("P %4i | st r%i %i\n", cr->index, arg_n[0], arg_n[1]);
 	}
+}
+
+void			op_st(t_vm *vm, t_carriage *cr)
+{
+	int		*args_type;
+	int		*arg_n;
+	int		new_position;
+	char	*s;
+
+	new_position = 0;
+	s = valid_str(vm, cr->position, 2);
+	args_type = check_arg(vm_atoi_16(s));
+	free(s);
+	arg_n = save_arg(vm, cr, args_type, &new_position);
+	helper(vm, cr, args_type, arg_n);
 	free(args_type);
-	args_type = NULL;
 	free(arg_n);
-	arg_n = NULL;
 	cr->position += new_position + 4;
 }

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 18:21:46 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/12 14:43:49 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/17 15:52:26 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_carriage	*copy_carriage(t_vm *vm, t_carriage *cr)
 	new->nbr_plr = cr->nbr_plr;
 	copy_regist(new, cr);
 	new->next = NULL;
+	new->prev = NULL;
 	vm->nbr_car = vm->nbr_car + 1;
 	return (new);
 }
@@ -57,6 +58,7 @@ void		op_fork(t_vm *vm, t_carriage *cr)
 	((dir % IDX_MOD) + cr->position / 2) % 4096);
 	cr->position = cr->position + 6;
 	new->next = vm->carriage;
+	vm->carriage->prev = new;
 	vm->carriage = new;
 	free(s);
 }
@@ -78,6 +80,7 @@ void		op_lfork(t_vm *vm, t_carriage *cr)
 	(dir + cr->position / 2));
 	cr->position = cr->position + 6;
 	new->next = vm->carriage;
+	vm->carriage->prev = new;
 	vm->carriage = new;
 	free(s);
 }

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/17 11:15:49 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/17 18:01:29 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,65 +32,50 @@
 # define BLA "\033[30m"
 # define WHI "\033[1;37m"
 
-/*
-** structers
-*/
-
 typedef struct s_vm			t_vm;
 typedef struct s_players	t_players;
 typedef struct s_carriage	t_carriage;
-/*
-** 1
-*/
-
 struct						s_players
 {
 	int						index;
 	int						live;
-	header_t				*champ;
+	t_header				*champ;
 	t_players				*next;
 };
-
 struct						s_vm
 {
-	int						index_player[MAX_PLAYERS];	
-	int						nbr_cycles;  			// -dump
-	int						nbr_plrs;				// кол-во игроков
-	int						cycle;					// циклов прошло
-	int						live;					// live за vm->cycle_to_die
-	int						nbr_checks;				// кол-во проверок, когда vm->cycle_to_die не менялся
-	
-	int						cycle_to_die;			// циклов до проверки
-	int						die;					// циклы смерти
-
-	int						nbr_log;				// бонус вывод
+	int						index_player[MAX_PLAYERS];
+	int						nbr_cycles;
+	int						nbr_plrs;
+	int						cycle;
+	int						live;
+	int						nbr_checks;
+	int						cycle_to_die;
+	int						die;
+	int						nbr_log;
 	int						aff;
 	int						curses;
-	int						nbr_car;				// кол-во кареток
+	int						nbr_car;
 	unsigned char			map[MEM_SIZE * 2];
 	unsigned char			color[MEM_SIZE * 2];
-
-	t_players				*players;				// игроки
-	
-	int						last_index;				// последний игрок который сказал что он жив
-	char					*last_name;				// имя последнего игрока
-
-	t_carriage				*carriage;				// каретки
+	t_players				*players;
+	int						last_index;
+	char					*last_name;
+	t_carriage				*carriage;
 };
 
 struct						s_carriage
 {
-	int						position;				// позиция каретки на карте
+	int						position;
 	int						carry;
-	int						nbr_plr;				// индекс игрока
+	int						nbr_plr;
 	int						index;
-	unsigned int			regist[REG_NUMBER];		// регистры
-
-	int						live;					// когда последний зал исполняла команду live
-	char					operation[2];			// байт операции
-	int						cycle;					// кол-во циклов до исполнения
-
+	unsigned int			regist[REG_NUMBER];
+	int						live;
+	char					operation[2];
+	int						cycle;
 	t_carriage				*next;
+	t_carriage				*prev;
 };
 
 /*
@@ -104,7 +89,8 @@ unsigned int				reverse(unsigned int b);
 ** parce.c
 */
 t_vm						*parce_argv(int ac, char **av, int i);
-header_t					*parce_champ(int fd, unsigned int i, char *s, char *s1);
+t_header					*parce_champ(int fd, unsigned int i,
+char *s, char *s1);
 void						add_champ(t_vm **all, t_players *new);
 void						parce_champ_index(t_vm *all);
 void						put_champ_index(t_vm *all);
@@ -113,24 +99,25 @@ void						put_champ_index(t_vm *all);
 */
 int							valid_champ(t_vm *all, char **av, int i);
 int							valid_num(t_vm *all, int ac, char **av, int i);
-int							valid_dump(t_vm *all, int ac, char **av, int i);
+int							valid_dump(t_vm *all, int ac, char **av,
+int i);
 int							str_of_num(char *str);
 int							nbr_champ(t_players *tmp);
 /*
 ** vm_map.c
 */
 void						vm_map(t_vm *vm, t_players *plr, int i, int k);
-int							find_cycle(int nbr);
 void						add_carriage(t_vm *vm, t_carriage *new);
-t_carriage					*init_carriage(t_vm *vm, int index, int position);
+void						init_carriage(t_vm *vm, int index, int position);
 /*
 ** corewar.c
 */
-void						kill_carriage(t_vm *vm, t_carriage *cr);
+void						kill_carriage(t_vm *vm, t_carriage **cr);
 void						main_check(t_vm *vm, t_carriage *tmp);
 void						check_player(t_vm *vm);
 void						check_command(t_vm *vm, t_carriage *cr);
 void						main_cycle(t_vm *vm);
+void						change_cycle(t_vm *vm);
 int							check_new_command(t_vm *vm, t_carriage *cr);
 /*
 ** func.c
@@ -142,9 +129,9 @@ int							*check_arg(int nb);
 ** other.c
 */
 void						print_dump(t_vm *vm);
-void						print_and_return(void);						// Написать
 void						win_player(t_players *last);
-void						replace_map(t_vm *vm, int position, char *ptr, int nb);
+void						replace_map(t_vm *vm, int position,
+char *ptr, int nb);
 void						privetstvie(t_vm *vm);
 
 /*
@@ -156,7 +143,7 @@ char						*valid_str(t_vm *vm, int position, int	nb);
 ** op_fork.c
 */
 void						copy_regist(t_carriage *new, t_carriage *cr);
-t_carriage					*copy_carriage(t_vm * vm, t_carriage *cr);
+t_carriage					*copy_carriage(t_vm *vm, t_carriage *cr);
 void						op_fork(t_vm *vm, t_carriage *cr);
 void						op_lfork(t_vm *vm, t_carriage *cr);
 /*
@@ -223,13 +210,14 @@ void						print_sti(int *t_args, t_carriage *cr);
 void						print_v4(t_carriage *cr, int *ar);
 void						print_lldi(t_carriage *cr, int *ar);
 void						visual_map(t_vm *vm);
-void						init_curses(void);
-void						recolor_map(t_vm *vm, int position, int nb, int color);
+void						init_curses(t_vm *vm);
+void						recolor_map(t_vm *vm, int position,
+int nb, int color);
 void						delete_cr(t_vm *vm);
 void						print_cr(t_vm *vm);
-void						visual_menu(t_vm *vm);
-
-typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
-//T_IND сколько пропускать
-extern	t_func					g_func[17];
+void						visual_menu(t_vm *vm, int sleep, int i);
+void						prnt_instruction(void);
+int							control_curses(int vis, t_vm *vm, int key);
+typedef	void				(*t_func)(t_vm *vm, t_carriage *cr);
+extern	t_func				g_func[17];
 #endif

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/14 16:13:57 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/17 18:22:20 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ t_vm			*init_vm(void)
 void			error(char *line)
 {
 	ft_printf("%s\n", line);
-	system("Leaks virtual_machine");
 	exit(1);
 }
 
@@ -64,21 +63,24 @@ unsigned int	reverse(unsigned int b)
 int				main(int ac, char **av)
 {
 	t_vm	*all;
+	int		mem;
 
+	mem = MEM_SIZE * 2;
 	all = parce_argv(ac, av, 1);
 	if (all->nbr_plrs >= 5)
 		error("TOO_MANY_PLAYERS");
+	if (mem <= 0)
+		error("BAD_MEM_SIZE");
 	if (all->nbr_plrs <= 0)
 		print_usage();
 	if (all->curses == 1)
 		null_flags(all);
-	ft_memset(all->map, '0', MEM_SIZE * 2);
-	// ft_memset(all->color, 9, MEM_SIZE * 2);
+	ft_memset(all->map, 48, mem);
+	ft_memset(all->color, 1, mem);
 	vm_map(all, all->players, 0, 0);
 	privetstvie(all);
-	// int i = -1;
-	// while (++i < 8192)
-	// 	ft_printf("%i", all->color[i]);
+	if (all->curses == 1)
+		init_curses(all);
 	main_cycle(all);
 	return (0);
 }

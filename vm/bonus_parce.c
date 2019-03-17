@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 09:21:59 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/15 15:05:54 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/17 18:10:25 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,7 @@ int		valid_curses(t_vm *all, int i)
 	return (i + 1);
 }
 
-void	print_usage(void)
-{
-	ft_printf("Usage: ./corewar [-dump N -v N -a | -p]");
-	ft_printf(" -n N <champion1.cor> <...>\n");
-	ft_printf("-a        : Prints output from \"aff\"");
-	ft_printf(" (Default is to hide it)\n");
-	ft_printf("-v N      : Verbosity levels,");
-	ft_printf(" can be added together to enable several\n");
-	ft_printf("		- 1 : Show lives\n");
-	ft_printf("		- 2 : Show cycles\n");
-	ft_printf("		- 4 : Show operations (Params are NOT litteral ...)\n");
-	ft_printf("		- 8 : Show deaths\n");
-	ft_printf("		- 16 : Show PC movements (Except for jumps)\n");
-	ft_printf("-c        : Ncurses output mode\n");
-	exit(1);
-}
-
-void		init_curses(void)
+void	init_curses(t_vm *vm)
 {
 	initscr();
 	cbreak();
@@ -69,7 +52,7 @@ void		init_curses(void)
 	init_pair(3, COLOR_RED, COLOR_BLACK);
 	init_pair(4, COLOR_MAGENTA, COLOR_BLACK);
 	init_pair(5, COLOR_YELLOW, COLOR_BLACK);
-	init_pair(6, 8, 8);
+	init_pair(6, COLOR_BLACK, 8);
 	init_pair(7, COLOR_BLACK, COLOR_CYAN);
 	init_pair(8, COLOR_BLACK, COLOR_RED);
 	init_pair(9, COLOR_BLACK, COLOR_MAGENTA);
@@ -79,6 +62,8 @@ void		init_curses(void)
 	init_pair(13, COLOR_MAGENTA, COLOR_MAGENTA);
 	init_pair(14, COLOR_YELLOW, COLOR_YELLOW);
 	nodelay(stdscr, TRUE);
+	visual_map(vm);
+	print_cr(vm);
 }
 
 void	null_flags(t_vm *vm)

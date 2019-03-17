@@ -6,7 +6,7 @@
 #    By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/26 13:22:53 by rkulahin          #+#    #+#              #
-#    Updated: 2019/03/14 14:11:35 by rkulahin         ###   ########.fr        #
+#    Updated: 2019/03/17 17:49:49 by rkulahin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,10 +42,12 @@ SRC = main.c \
 		op_aff.c  \
 		parce_plus.c \
 		print_log4.c \
-		curses.c
+		curses.c \
+		curses2.c  \
+		corewar2.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 INCL = -I includes/
-FLAGS =	-g -Wall -Wextra -Werror
+FLAGS =	-g -Wall -Wextra -Werror -O3
 
 
 all: $(NAME)

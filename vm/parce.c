@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:32:24 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/11 16:44:14 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/17 17:19:34 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,14 @@ static void	ch_magic(char *s, char *s1)
 	free(s1);
 }
 
-header_t	*parce_champ(int fd, unsigned int i, char *s, char *s1)
+t_header	*parce_champ(int fd, unsigned int i, char *s, char *s1)
 {
-	header_t		*champ;
+	t_header		*champ;
 	unsigned int	read_n;
 	unsigned int	head_len;
 
 	i = 0;
-	champ = (header_t *)malloc(sizeof(header_t));
+	champ = (t_header *)malloc(sizeof(t_header));
 	head_len = 4 + PROG_NAME_LENGTH + 4 + 4 + COMMENT_LENGTH + 4;
 	read_n = read(fd, champ, head_len);
 	if (read_n != head_len)
