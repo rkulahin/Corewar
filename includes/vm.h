@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/14 15:23:02 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/17 11:15:49 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ int							*check_arg(int nb);
 /*
 ** other.c
 */
+void						print_dump(t_vm *vm);
 void						print_and_return(void);						// Написать
 void						win_player(t_players *last);
 void						replace_map(t_vm *vm, int position, char *ptr, int nb);
@@ -224,6 +225,9 @@ void						print_lldi(t_carriage *cr, int *ar);
 void						visual_map(t_vm *vm);
 void						init_curses(void);
 void						recolor_map(t_vm *vm, int position, int nb, int color);
+void						delete_cr(t_vm *vm);
+void						print_cr(t_vm *vm);
+void						visual_menu(t_vm *vm);
 
 typedef	void	(*t_func)(t_vm *vm, t_carriage *cr);
 //T_IND сколько пропускать

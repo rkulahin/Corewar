@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/14 14:08:39 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/15 17:10:09 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,34 +68,49 @@ void			add_carriage(t_vm *vm, t_carriage *new)
 	tmp->next = new;
 }
 
+void			check_lost_byte(int i, char *str, t_players *plr, t_vm *vm)
+{
+	int					k;
+	unsigned int		z;
+
+	k = -1;
+	z = 0;
+	while (str[++k] && z < (plr->champ->prog_size % 4) * 2)
+	{
+		vm->color[i] = plr->index + 1;
+		vm->map[i] = str[k];
+		z++;
+		i++;
+	}
+}
+
 void			vm_map(t_vm *vm, t_players *plr, int i, int k)
 {
 	unsigned int	j;
-	int				p;
 	int				byt;
 	char			*str;
 	t_carriage		*new;
 
 	byt = MEM_SIZE * 2 / vm->nbr_plrs;
-	p = 1;
 	while (plr)
 	{
 		i = (plr->index - 1) * byt;
 		j = 0;
-		while (j < plr->champ->prog_size / 4 + plr->champ->prog_size % 4)
+		while (j < plr->champ->prog_size / 4)
 		{
 			k = -1;
 			str = vm_itoa_16(plr->champ->prog[j]);
 			while (str[++k])
 			{
-				vm->color[i] = p + 1;
+				vm->color[i] = plr->index + 1;
 				vm->map[i] = str[k];
 				i++;
 			}
 			free(str);
 			j++;
 		}
-		p++;
+		if (plr->champ->prog_size % 4)
+			check_lost_byte(i, vm_itoa_16(plr->champ->prog[j]), plr, vm);
 		new = init_carriage(vm, plr->index, (plr->index - 1) * byt);
 		add_carriage(vm, new);
 		plr = plr->next;

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/14 15:14:20 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/17 11:19:48 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,27 @@ void		win_player(t_players *last)
 	exit(1);
 }
 
-void		print_and_return(void)
+void			print_dump(t_vm *vm)
 {
-	return ;
+	int			i;
+
+	i = -1;
+	ft_printf("%14c", ' ');
+	while (++i < 128 / 2)
+		ft_printf("%3d", i);
+	i = 0;
+	while (vm->map[i] && i < MEM_SIZE * 2)
+	{
+		if (i % 128 == 0)
+		{
+			write(1, "\n", 1);
+			ft_printf("%#.4x -> %-3d: ", i / 2, i / 128);
+		}
+		ft_printf("%c%c ", vm->map[i], vm->map[i + 1]);
+		i += 2;
+	}
+	write(1, "\n", 1);
+	exit(1);
 }
 
 void		replace_map(t_vm *vm, int position, char *ptr, int nb)
@@ -37,8 +55,6 @@ void		replace_map(t_vm *vm, int position, char *ptr, int nb)
 	while (i < nb)
 	{
 		vm->map[(position + j) % 8192] = ptr[j];
-		if (vm->curses == 1)
-			vm->color[(position + j) % 8192] = ptr[j];
 		i++;
 		j++;
 	}

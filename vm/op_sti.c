@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 15:53:02 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/14 15:23:45 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/15 17:32:12 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void			op_sti(t_vm *vm, t_carriage *cr)
 		replace_map(vm, cr->position + ((args_number[1] + args_number[2])
 		% IDX_MOD) * 2, s, 8);
 		recolor_map(vm, cr->position + ((args_number[1] + args_number[2])
-		% IDX_MOD) * 2, 8, vm->color[cr->position]);
+		% IDX_MOD) * 2, 8, cr->nbr_plr + 1);
 		if ((vm->nbr_log & 4) == 4)
 			print_sti(args_number, cr);
 		free(s);

@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 14:36:08 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/14 15:22:06 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/15 17:32:04 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void			op_st(t_vm *vm, t_carriage *cr)
 			8192, s, 8);
 			free(s);
 			recolor_map(vm, (cr->position + (arg_n[1] % IDX_MOD) * 2) %
-			8192, 8, vm->color[cr->position]);
+			8192, 8, cr->nbr_plr + 1);
 			s = NULL;
 		}
 		if ((vm->nbr_log & 4) == 4)

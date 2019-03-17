@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/14 16:15:59 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/17 11:18:30 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ void			main_cycle(t_vm *vm)
 	{
 		init_curses();
 		visual_map(vm);
+		print_cr(vm);
 	}
 	while (true)
 	{
@@ -186,30 +187,32 @@ void			main_cycle(t_vm *vm)
 		{	
 		car = vm->carriage;
 		if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
-			print_and_return();
+			print_dump(vm);
 		if (!car)
-			print_and_return();
+			print_dump(vm);
 		while (car)
 		{
 			if (car->cycle <= vm->cycle)
 			{
+				delete_cr(vm);
 				if (car->cycle != -1)
 					check_command(vm, car);
 				else if (!check_new_command(vm, car))
 					car->position = (car->position + 2) % 8192;
+				print_cr(vm);
 			}
 			car = car->next;
 		}
 		if (vm->cycle >= vm->cycle_to_die)
 			main_check(vm, NULL);
 		print_cycle(vm);
-		mvprintw(65, 8, "%i", vm->cycle + 1);
 		vm->cycle++;
 		}
-		if (vis == 1)
+		visual_menu(vm);
+		if (vm->cycle >= 10000 && vis == 1)
 			vis = 0;
 		if (getch() == KEY_UP)
-			vis = 1;
+			vis = vis == 1 ? 0 : 1;
 	}
 	endwin();
 }
