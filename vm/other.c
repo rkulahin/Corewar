@@ -6,14 +6,31 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/17 17:08:56 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/18 11:31:16 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-void			win_player(t_players *last)
+void			win_player(t_vm *vm, t_players *last)
 {
+	int key;
+
+	key = 0;
+	if (vm->curses == 1)
+	{
+		mvprintw(45, 128 + 128 / 2 + 10, "Contestant %i, \"%s\", has won !");
+		mvprintw(50, 128 + 128 / 2 + 10, "PRESS TAB to exit");
+		while (true)
+		{
+			key = getch();
+			if (key == KEY_CTAB)
+			{
+				endwin();
+				exit(1);
+			}
+		}
+	}
 	ft_printf("Contestant %i, \"%s\", has won !\n",
 	last->index, last->champ->prog_name);
 	exit(1);

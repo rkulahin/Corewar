@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/17 11:32:05 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/17 17:43:13 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/18 11:12:43 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void			prnt_instruction(void)
 {
 	int		i;
 
-	i = 40;
+	i = 35;
 	mvprintw(i, 128 + 128 / 2 + 10, "...INSTRUCTION...");
 	mvprintw(++i, 128 + 128 / 2 + 10, "RUN ++1 -----> KEY_LEFT");
 	mvprintw(++i, 128 + 128 / 2 + 10, "RUN ++10 ----> KEY_DOWN");

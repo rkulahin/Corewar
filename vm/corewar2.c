@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/17 16:36:52 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/17 17:03:41 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/18 12:59:59 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void			main_check(t_vm *vm, t_carriage *tmp)
 			tmp = tmp->next;
 	}
 	change_cycle(vm);
+	if (vm->cycle == 28000)
+		write(0, 0, 0);
 	if (!vm->carriage)
 		check_player(vm);
 	vm->nbr_checks += 1;
@@ -72,12 +74,14 @@ void			check_player(t_vm *vm)
 	tmp = vm->players;
 	while (tmp)
 	{
-		if (tmp->live > last->live)
+		if (tmp->live > last->live ||
+		(tmp->live == last->live && tmp->index < last->index))
 			last = tmp;
 		tmp = tmp->next;
 	}
-	if (last->live < vm->cycle - vm->die && vm->curses != 1)
-		win_player(last);
+	if ((last->live < vm->cycle - vm->die && vm->die > 0) ||
+	(last->live < vm->cycle && vm->die < 0))
+		win_player(vm, last);
 }
 
 void			print_adv16(t_vm *vm, t_carriage *cr, int old_pos, int i)

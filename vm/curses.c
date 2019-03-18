@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:05:57 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/17 18:11:03 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/18 11:39:58 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void				print_cr(t_vm *vm)
 	while (tmp)
 	{
 		if (vm->color[tmp->position % 8192] >= 1 &&
-		vm->color[tmp->position % 8192] <= 6)
+		vm->color[tmp->position % 8192] < 6)
 		{
 			coord = find_x_y(tmp->position + 1);
 			mvaddch(coord[1], coord[0], vm->map[(tmp->position) %

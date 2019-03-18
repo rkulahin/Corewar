@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/17 17:03:36 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/18 11:47:39 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ void			main_cycle(t_vm *vm)
 			car = vm->carriage;
 			if (vm->nbr_cycles >= vm->cycle && vm->nbr_cycles != 0)
 				print_dump(vm);
-			if (!car)
-				print_dump(vm);
 			main_cycle_car(vm, car);
 			if (vm->cycle >= vm->cycle_to_die)
 				main_check(vm, NULL);
@@ -98,6 +96,4 @@ void			main_cycle(t_vm *vm)
 		}
 		vis = control_curses(vis, vm, 0);
 	}
-	if (vm->curses == 1)
-		endwin();
 }
