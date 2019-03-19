@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/18 11:31:16 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/19 16:13:36 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@ void			win_player(t_vm *vm, t_players *last)
 	key = 0;
 	if (vm->curses == 1)
 	{
-		mvprintw(45, 128 + 128 / 2 + 10, "Contestant %i, \"%s\", has won !");
-		mvprintw(50, 128 + 128 / 2 + 10, "PRESS TAB to exit");
+		mvprintw(45, 128 + 128 / 2 + 10, "Contestant %i, \"%s\", has won !",
+		last->index, last->champ->prog_name);
+		mvprintw(50, 128 + 128 / 2 + 10, "[EXIT] ------> SHIFT + TAB");
 		while (true)
 		{
 			key = getch();
-			if (key == KEY_CTAB)
+			if (key == KEY_BTAB)
 			{
 				endwin();
 				exit(1);

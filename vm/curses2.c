@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/17 11:32:05 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/18 11:12:43 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/19 15:26:58 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@ void			visual_menu(t_vm *vm, int sleep, int i)
 	t_players	*tmp;
 
 	mvprintw(i, 128 + 128 / 2 + 10, ">> PAUSED <<");
-	mvprintw(++i, 128 + 128 / 2 + 10, "Cycles/second :              ");
-	mvprintw(i, 128 + 128 / 2 + 10, "Cycles/second : %i", sleep);
-	mvprintw(++i, 128 + 128 / 2 + 10, "Cycle : %d", vm->cycle);
-	mvprintw(++i, 128 + 128 / 2 + 10, "Processes : %d", vm->nbr_car - 1);
+	mvprintw(++i, 128 + 128 / 2 + 10, "Cycles/second : %-8d", sleep);
+	mvprintw(++i, 128 + 128 / 2 + 10, "Cycle : %-8d", vm->cycle);
+	mvprintw(++i, 128 + 128 / 2 + 10, "Processes : %-8d", vm->nbr_car - 1);
 	i += 2;
 	tmp = vm->players;
 	while (tmp)
@@ -34,10 +33,10 @@ void			visual_menu(t_vm *vm, int sleep, int i)
 		tmp = tmp->next;
 	}
 	i += 2;
-	mvprintw(++i, 128 + 128 / 2 + 10, "Cycle to Die : %d", vm->die);
-	mvprintw(++i, 128 + 128 / 2 + 10, "Cycle Delta : %d", CYCLE_DELTA);
-	mvprintw(++i, 128 + 128 / 2 + 10, "NBR LIVE : %d", vm->live);
-	mvprintw(++i, 128 + 128 / 2 + 10, "NBR CHECKS : %d", vm->nbr_checks);
+	mvprintw(++i, 128 + 128 / 2 + 10, "Cycle to Die : %-8d", vm->die);
+	mvprintw(++i, 128 + 128 / 2 + 10, "Cycle Delta : %-8d", CYCLE_DELTA);
+	mvprintw(++i, 128 + 128 / 2 + 10, "NBR LIVE : %-8d", vm->live);
+	mvprintw(++i, 128 + 128 / 2 + 10, "NBR CHECKS : %-8d", vm->nbr_checks);
 }
 
 int				control_curses(int sleep, t_vm *vm, int key)

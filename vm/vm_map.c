@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/17 17:40:57 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/19 16:09:28 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void			check_lost_byte(int i, char *str, t_players *plr, t_vm *vm)
 		z++;
 		i++;
 	}
+	free(str);
 }
 
 void			vm_map(t_vm *vm, t_players *plr, int i, int k)

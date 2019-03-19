@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/17 16:36:52 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/18 12:59:59 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/19 16:05:04 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void			kill_carriage(t_vm *vm, t_carriage **cr)
 	}
 	else
 		vm->carriage = NULL;
-	free(cr);
+	free(*cr);
 }
 
 void			main_check(t_vm *vm, t_carriage *tmp)
