@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   op_sti.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 15:53:02 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/15 17:32:12 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/22 14:01:32 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static int		find_ind(t_vm *vm, int nb)
+static int		find_ind(t_vm *vm, int nb, int pc)
 {
 	int		t_ind;
 	char	*s;
 
-	s = valid_str(vm, (nb % IDX_MOD) * 2, 8);
+	s = valid_str(vm, pc + (nb % IDX_MOD) * 2 - 2, 8);
 	t_ind = vm_atoi_16(s);
 	free(s);
 	return (t_ind);
@@ -50,7 +50,8 @@ static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 	t_args = (int *)malloc(sizeof(int) * 3);
 	while (++i < 3)
 		if (args[i] == T_IND)
-			t_args[i] = find_ind(vm, arg_find(vm, cr, 4, j));
+			t_args[i] = (unsigned int)find_ind(vm, arg_find(vm, cr, 4, j),
+			cr->position);
 		else if (args[i] == T_REG)
 			t_args[i] = arg_find(vm, cr, 2, j);
 		else if (args[i] == T_DIR)

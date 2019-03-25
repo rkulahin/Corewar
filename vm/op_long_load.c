@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 17:43:31 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/12 14:14:35 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/25 15:01:06 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 		else if (args[i] == T_REG)
 			t_args[i] = arg_find(vm, cr, 2, j);
 		else if (args[i] == T_DIR)
-			t_args[i] = arg_find(vm, cr, 4, j);
+			t_args[i] = arg_find(vm, cr, 8, j);
 	return (t_args);
 }
 

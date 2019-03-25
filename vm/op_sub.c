@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op_sub.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 19:20:29 by seshevch          #+#    #+#             */
-/*   Updated: 2019/03/11 18:16:38 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/22 13:58:19 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int		check(int **args_number, int *args_type)
 		j = 0;
 	while (++i < 3)
 		if (args_type[i] == T_REG && (args_number[0][i] <= 0 ||
-		args_number[0][i] > 17))
+		args_number[0][i] > 16))
 			j = 0;
 	return (j);
 }

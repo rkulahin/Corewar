@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 13:37:44 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/12 10:29:12 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/25 14:55:35 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int		find_ind(t_vm *vm, int pc, int nb)
 	int		t_ind;
 	char	*str;
 
-	str = valid_str(vm, (pc - 2 + nb) % 8192, 8);
+	str = valid_str(vm, (pc - 2 + (nb % IDX_MOD) * 2) % 8192, 8);
 	t_ind = (unsigned int)vm_atoi_16(str);
 	free(str);
 	return (t_ind);
@@ -65,8 +65,7 @@ static int		check(t_carriage *cr, int **args_number, int *args_type)
 
 	i = -1;
 	j = 1;
-	if (args_type[2] != T_REG || args_number[0][0] <= 0 ||
-	args_type[0] == 0 || args_type[1] == 0 || args_number[0][0] >= 17)
+	if (args_type[2] != T_REG || args_type[0] == 0 || args_type[1] == 0)
 		j = 0;
 	while (++i < 2)
 	{
@@ -76,8 +75,7 @@ static int		check(t_carriage *cr, int **args_number, int *args_type)
 		else if (args_type[i] == T_REG)
 			j = 0;
 	}
-	if (args_type[2] == T_REG && (args_number[0][2] < 1 ||
-	args_number[0][2] > 16))
+	if (args_number[0][2] < 1 || args_number[0][2] > 16)
 		j = 0;
 	return (j);
 }
