@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+         #
+#    By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/26 13:22:53 by rkulahin          #+#    #+#              #
-#    Updated: 2019/03/22 12:54:30 by seshevch         ###   ########.fr        #
+#    Updated: 2019/03/25 18:47:31 by rkulahin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ SRC = main.c \
 		corewar2.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 INCL = -I includes/
-FLAGS =	-g -Wall -Wextra -Werror -O3
+FLAGS =	-g -Wall -Wextra -Werror
 
 all: $(NAME)
 $(NAME):	$(OBJ) $(LIB)

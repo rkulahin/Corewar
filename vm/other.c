@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/25 15:18:23 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/25 20:00:28 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,18 @@ void			print_dump(t_vm *vm)
 	int			i;
 
 	i = 0;
-	while (vm->map[i] && i < MEM_SIZE * 2)
+	while (i < MEM_SIZE * 2)
 	{
 		if (i % 128 == 0)
 		{
 			if (i != 0)
-				write(1, "\n", 1);
+				ft_printf("\n");
 			ft_printf("%#.4x : ", i / 2);
 		}
 		ft_printf("%c%c ", vm->map[i], vm->map[i + 1]);
 		i += 2;
 	}
-	write(1, "\n", 1);
+	ft_printf("\n");
 	exit(1);
 }
 
