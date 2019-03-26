@@ -6,7 +6,7 @@
 /*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:05:57 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/25 19:44:08 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/26 12:36:10 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void				recolor_map(t_vm *vm, int position, int nb, int color)
 
 	i = 0;
 	j = 0;
+	if (vm->curses != 1)
+		return ;
 	if (position < 0)
 		position = position + 8192;
 	while (i < nb)
